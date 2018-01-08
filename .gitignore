@@ -1,0 +1,9 @@
+# Auto generated stuff.
+__pycache__/
+*.pyc
+
+# Mac stuff.
+*.DS_STORE
+
+# Local files.
+local_settings.json
