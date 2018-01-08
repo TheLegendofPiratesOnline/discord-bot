@@ -1,0 +1,8 @@
+{
+    "appToken": "unset",
+    "checkForUpdates": true,
+    "language": "en-us",
+    "commandPrefix": "!",
+    "debug":false,
+    "suppessWarnings":true
+}
