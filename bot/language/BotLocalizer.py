@@ -8,3 +8,15 @@
 # All use of this software is subject to the terms of the revised BSD
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
+
+"""
+TODO
+
+The class BotLocalizer will be used in the future to
+select which language to use when providing responses
+in Discord channels.
+
+There will be a corresponding file to this class which
+will contain the actual strings in their respective
+language.
+"""

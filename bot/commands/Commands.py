@@ -10,18 +10,25 @@
 # with this source code in a file named "LICENSE."
 
 from discord.ext import commands
+
 import builtins
 
 class Commands:
+    """
+    The Commands class will house all commands provided by the
+    TLOPO Discord Bot.
+
+    This will hopefully make it easier for any developers to add
+    further commands to this bot.
+    """
     def __init__(self):
-        # This is really disgusting but works.
+        # Right now, this is really disgusting - but it works!
         # TODO: Rewrite.
 
         @self.bot.command()
         async def test(*args):
             """
-            command: ping
-            description: simple test command.
+            Simple test command.
             """
 
             await self.bot.say("alive")

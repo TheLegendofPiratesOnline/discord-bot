@@ -9,6 +9,11 @@
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
 
+"""
+The BotGlobals class will serve as a central location
+of all global values in the TLOPO Discord Bot project.
+"""
+
 APP_DESCRIPTION = "Discord bot by TLOPO. <3  https://github.com/TheLegendofPiratesOnline/discord-bot"
 
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
