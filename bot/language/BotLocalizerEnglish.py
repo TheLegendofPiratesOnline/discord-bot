@@ -10,11 +10,19 @@
 # with this source code in a file named "LICENSE."
 
 """
-TODO
-
-The class BotLocalizerEnglish will be used in the future
-to when providing responses in Discord channels where English
-is the spoken language.
+The class BotLocalizerEnglish is used when providing responses
+in Discord channels where English is the spoken language.
 
 All strings in this class will be in English only.
 """
+
+OUT_OF_DATE = "This bot is currently out of date.  Please update to the latest version to use this command"
+
+FLEET_ITEM_INFO = '''
+%s:
+    - Type: %s
+    - State: %s
+    - Ships Remaining: %s
+'''
+
+OCEANS_TOTAL = '\nTotal: **%s**'

@@ -12,6 +12,8 @@
 from discord.ext import commands
 
 from bot.base import BotGlobals, BotSettings
+from bot.tasks import BotTasks
+
 from bot.commands import Commands
 
 import json
@@ -45,6 +47,10 @@ class BotCore(Commands.Commands):
         # Create the bot using Discord's API.
         self.bot = commands.Bot(description=BotGlobals.APP_DESCRIPTION,
                        command_prefix=self.settings.getSetting('commandPrefix'))
+
+        # Initialize taskMgr.
+        self.taskMgr = BotTasks.BotTasks()
+        self.taskMgr.initializeTasks(BotGlobals.BOT_TASKS)
 
         # Initialize the Commands class.
         Commands.Commands.__init__(self)

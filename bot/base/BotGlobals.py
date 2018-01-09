@@ -26,3 +26,41 @@ API_URLS = {
     'shards':'https://api.piratesonline.co/shards',
     'system_status':'https://api.piratesonline.co/system/status'
 }
+
+BOT_TASKS = {
+    'task_shards': {
+        'time': 60.0,
+        'api_url': API_URLS.get('shards')
+    },
+    'task_system_status': {
+        'time': 60.0,
+        'api_url': API_URLS.get('system_status')
+    },
+    'task_news_feed': {
+        'time': 60.0,
+        'api_url': API_URLS.get('news_feed')
+    },
+    'task_news_notification': {
+        'time': 60.0,
+        'api_url': API_URLS.get('news_notification')
+    }
+}
+
+BASE_CHANNEL_TO_NAME = {
+    '401000000': 'Abassa',
+    '402000000': 'Andaba',
+    '403000000': 'Aventurado',
+    '404000000': 'Belleza',
+    '405000000': 'Bequermo',
+    '406000000': 'Exuma',
+    '407000000': 'Jovencito',
+    '408000000': 'Juntos',
+    '409000000': 'Ladrones',
+    '410000000': 'Levanta',
+    '411000000': 'Marineros',
+    '412000000': 'Nocivo',
+    '413000000': 'Poderoso',
+    '414000000': 'Sabada',
+    '415000000': 'Temprano',
+    '416000000': 'Valor'
+}
