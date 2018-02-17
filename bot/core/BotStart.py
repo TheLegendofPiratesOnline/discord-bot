@@ -17,7 +17,7 @@ When this file is invoked, it will initialize the
 bot and connect it to its respective Discord channel(s).
 """
 
-from bot.base import BotCore
+from bot.core import BotCore
 
 print(":BotStart: Initializing core...")
 

@@ -11,7 +11,7 @@
 
 from discord.ext import commands
 
-from bot.base import BotGlobals, BotSettings
+from bot.core import BotGlobals, BotSettings
 from bot.tasks import BotTasks
 
 from bot.commands import Commands

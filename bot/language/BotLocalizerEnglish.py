@@ -33,4 +33,11 @@ INVASION_ITEM_INFO = '''
     - Num Players: %s
 '''
 
+SYSTEM_STATUS_INFO = '''
+Overall Status: **%s**
+%s
+
+Reported Outages: %s
+'''
+
 OCEANS_TOTAL = '\nTotal: **%s**'

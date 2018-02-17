@@ -9,6 +9,7 @@
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
 
+from bot.core import BotGlobals
 import threading
 import requests
 import json
@@ -55,7 +56,22 @@ class BotTasks:
 
     def task_system_status(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
-        # TODO.
+        resp = self.contactAPI(task.get('api_url'))
+        if resp:
+            servers = resp.get('servers')
+            if servers:
+                outages = [j.get('name', 'Error-NoName')
+                           for i in servers.keys()
+                           for j in servers.get(i)
+                           if j.get('status') != BotGlobals.STATUS_ALIVE]
+            else:
+                outages = []
+
+            out = {}
+            out['status'] = resp.get('status')
+            out['notices'] = resp.get('notices', 0) or None
+            out['outages'] = outages or None
+            self.setSystemStatus(out)
 
     def task_shards(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
