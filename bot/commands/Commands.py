@@ -75,10 +75,13 @@ class Commands:
             invasions = self.taskMgr.getActiveInvasions()
 
             if invasions:
-                # At the time of this writing, invasions haven't been
-                # released. When they are released, this bot will
-                # receive an update.
-                output = BotLocalizer.OUT_OF_DATE
+                output = ""
+                for i, k in sorted(invasions.items()):
+                    output += BotLocalizer.INVASION_ITEM_INFO % (i,
+                                                              k.get('location'),
+                                                              k.get('state'),
+                                                              k.get('phase'),
+                                                              k.get('numPlayers'))
             else:
                 output = "No active invasions."
 

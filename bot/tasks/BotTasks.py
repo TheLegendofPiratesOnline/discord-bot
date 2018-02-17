@@ -61,8 +61,8 @@ class BotTasks:
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
         resp = self.contactAPI(task.get('api_url'))
         if resp:
-            newFleets = {}
-            newInvasions = {}
+            fleets = {}
+            invasions = {}
             populations = {}
 
             for shardId in resp.keys():
@@ -80,17 +80,17 @@ class BotTasks:
 
                 # Assign active fleets/invasions.
                 if fleet:
-                    newFleets[name] = fleet
+                    fleets[name] = fleet
 
                 if invasion:
-                    newInvasions[name] = invasion
+                    invasions[name] = invasion
 
                 # Set the population of this shard.
                 populations[name] = shardInfo.get('population')
 
             # Set active fleets.
-            self.setActiveFleets(newFleets)
-            self.setActiveInvasions(newInvasions)
+            self.setActiveFleets(fleets)
+            self.setActiveInvasions(invasions)
             self.setOceanPopulations(populations)
 
     ## Other task functions.

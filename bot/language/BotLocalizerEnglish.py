@@ -16,13 +16,21 @@ in Discord channels where English is the spoken language.
 All strings in this class will be in English only.
 """
 
-OUT_OF_DATE = "This bot is currently out of date.  Please update to the latest version to use this command"
+OUT_OF_DATE = "This bot is currently out of date."
 
 FLEET_ITEM_INFO = '''
 %s:
     - Type: %s
     - State: %s
     - Ships Remaining: %s
+'''
+
+INVASION_ITEM_INFO = '''
+%s:
+    - Location: %s
+    - State: %s
+    - Phase: %s
+    - Num Players: %s
 '''
 
 OCEANS_TOTAL = '\nTotal: **%s**'
