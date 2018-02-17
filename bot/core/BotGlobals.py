@@ -29,19 +29,19 @@ API_URLS = {
 
 BOT_TASKS = {
     'task_shards': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('shards')
     },
     'task_system_status': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('system_status')
     },
     'task_news_feed': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('news_feed')
     },
     'task_news_notification': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('news_notification')
     }
 }
@@ -63,4 +63,20 @@ BASE_CHANNEL_TO_NAME = {
     '414000000': 'Sabada',
     '415000000': 'Temprano',
     '416000000': 'Valor'
+}
+
+STATUS_ALIVE = 1
+STATUS_MESSAGE = 2
+STATUS_UPDATE = 4
+STATUS_ERROR = 8
+STATUS_FATAL = 16
+STATUS_UNKNOWN = 32
+
+CODE_TO_STATUS = {
+    STATUS_ALIVE:   "STATUS_ALIVE",
+    STATUS_MESSAGE: "STATUS_MESSAGE",
+    STATUS_UPDATE:  "STATUS_UPDATE",
+    STATUS_ERROR:   "STATUS_ERROR",
+    STATUS_FATAL:   "STATUS_FATAL",
+    STATUS_UNKNOWN: "STATUS_UNKNOWN"
 }

@@ -9,7 +9,7 @@
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
 
-from bot.base.BotGlobals import *
+from bot.core.BotGlobals import *
 
 import json
 import os
