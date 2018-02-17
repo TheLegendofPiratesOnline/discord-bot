@@ -16,7 +16,7 @@ in Discord channels where English is the spoken language.
 All strings in this class will be in English only.
 """
 
-OUT_OF_DATE = "This bot is currently out of date."
+OUT_OF_DATE = "This bot is out of date. Please update by visiting https://github.com/TheLegendofPiratesOnline/discord-bot"
 
 FLEET_ITEM_INFO = '''
 %s:
