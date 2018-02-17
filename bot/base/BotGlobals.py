@@ -29,19 +29,19 @@ API_URLS = {
 
 BOT_TASKS = {
     'task_shards': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('shards')
     },
     'task_system_status': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('system_status')
     },
     'task_news_feed': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('news_feed')
     },
     'task_news_notification': {
-        'time': 60.0,
+        'time': 25.0,
         'api_url': API_URLS.get('news_notification')
     }
 }
