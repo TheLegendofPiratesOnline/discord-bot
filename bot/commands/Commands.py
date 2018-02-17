@@ -12,6 +12,9 @@
 from discord.ext import commands
 
 from bot.language import BotLocalizer
+from bot.core import BotGlobals
+
+from datetime import datetime
 
 class Commands:
     """
@@ -75,12 +78,43 @@ class Commands:
             invasions = self.taskMgr.getActiveInvasions()
 
             if invasions:
-                # At the time of this writing, invasions haven't been
-                # released. When they are released, this bot will
-                # receive an update.
-                output = BotLocalizer.OUT_OF_DATE
+                output = ""
+                for i, k in sorted(invasions.items()):
+                    output += BotLocalizer.INVASION_ITEM_INFO % (i,
+                                                              k.get('location'),
+                                                              k.get('state'),
+                                                              k.get('phase'),
+                                                              k.get('numPlayers'))
             else:
                 output = "No active invasions."
 
             # Response.
+            await self.bot.say(output)
+
+        @self.bot.command()
+        async def status(*args):
+            """
+            Returns current server status.
+            """
+
+            s = self.taskMgr.getSystemStatus()
+
+            if s:
+                notices = s.get('notices')
+                status = BotGlobals.CODE_TO_STATUS.get(int(s.get('status')), 'Unknown')
+                outages = s.get('outages')
+
+                tmp = ""
+                for i in notices.keys():
+                    notice = notices[i]
+                    msg = notice.get('text')
+                    flag = BotGlobals.CODE_TO_STATUS.get(int(notice.get('flag')))
+
+                    tmp += "\n**%s** | %s\n**Message:** *%s*" % (
+                                                flag, i, msg)
+
+                output = BotLocalizer.SYSTEM_STATUS_INFO % (status, tmp, outages)
+            else:
+                output = "System status is unknown."
+
             await self.bot.say(output)
