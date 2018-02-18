@@ -105,17 +105,18 @@ class Commands:
                 outages = s.get('outages')
 
                 if notices:
+                    tmp = ""
                     for i in notices.keys():
                         notice = notices[i]
                         msg = notice.get('text')
                         flag = BotGlobals.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
 
-                        tmp += "\n**%s** | %s\n**Message:** *%s*" % (
+                        tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (
                                                     flag, i, msg)
                 elif s.get('status', 0) == 3:
-                    tmp = "The Legend of Pirates Online is currently closed for an update."
+                    tmp = "\nThe Legend of Pirates Online is currently closed for an update."
                 else:
-                    tmp = "No known notices."
+                    tmp = "\nNo known notices."
 
                 output = BotLocalizer.SYSTEM_STATUS_INFO % (status, tmp, outages)
             else:
