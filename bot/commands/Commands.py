@@ -36,7 +36,7 @@ class Commands:
             """
 
             output = ""
-            oceans = {} #self.taskMgr.getOceanPopulations()
+            oceans = self.taskMgr.getOceanPopulations()
             total = 0
 
             for i, k in sorted(oceans.items()):
