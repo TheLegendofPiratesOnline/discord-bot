@@ -10,7 +10,7 @@ The following procedure documents how to set up the TLOPO Discord Bot.
 1. Open a new instance of Terminal (UNIX/Mac) or Command Prompt (Windows).
 2. Change your current working directory to the TLOPO Discord Bot source code.
 3. Run the following command to install the dependencies that the bot needs to run: 
-`python3 -m pip install -r requirements.txt
+`python3 -m pip install -r requirements.txt`
 4. Once that has completed, you're ready to start the bot. Use the following command to start:
 `python3 -m bot.core.BotStart`
 5. You'll be prompted to configure the bot. 
