@@ -36,7 +36,6 @@ INVASION_ITEM_INFO = '''
 SYSTEM_STATUS_INFO = '''
 Overall Status: **%s**
 %s
-
 Reported Outages: %s
 '''
 

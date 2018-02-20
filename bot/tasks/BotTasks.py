@@ -63,7 +63,7 @@ class BotTasks:
                 outages = [j.get('name', 'Error-NoName')
                            for i in servers.keys()
                            for j in servers.get(i)
-                           if j.get('status') != BotGlobals.STATUS_ALIVE]
+                           if j.get('status') != BotGlobals.STATUS_ALIVE_SRV]
             else:
                 outages = []
 

@@ -36,7 +36,7 @@ class Commands:
             """
 
             output = ""
-            oceans = {} #self.taskMgr.getOceanPopulations()
+            oceans = self.taskMgr.getOceanPopulations()
             total = 0
 
             for i, k in sorted(oceans.items()):
@@ -101,17 +101,22 @@ class Commands:
 
             if s:
                 notices = s.get('notices')
-                status = BotGlobals.CODE_TO_STATUS.get(int(s.get('status')), 'Unknown')
+                status = BotGlobals.GLOB_CODE_TO_STATUS.get(int(s.get('status')), 'Unknown')
                 outages = s.get('outages')
 
-                tmp = ""
-                for i in notices.keys():
-                    notice = notices[i]
-                    msg = notice.get('text')
-                    flag = BotGlobals.CODE_TO_STATUS.get(int(notice.get('flag')))
+                if notices:
+                    tmp = ""
+                    for i in notices.keys():
+                        notice = notices[i]
+                        msg = notice.get('text')
+                        flag = BotGlobals.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
 
-                    tmp += "\n**%s** | %s\n**Message:** *%s*" % (
-                                                flag, i, msg)
+                        tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (
+                                                    flag, i, msg)
+                elif s.get('status', 0) == 3:
+                    tmp = "\nThe Legend of Pirates Online is currently closed for an update."
+                else:
+                    tmp = "\nNo known notices."
 
                 output = BotLocalizer.SYSTEM_STATUS_INFO % (status, tmp, outages)
             else:
