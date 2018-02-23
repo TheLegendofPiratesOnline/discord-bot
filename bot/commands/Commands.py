@@ -47,7 +47,7 @@ class Commands:
             if s.get('status', 0) == 3:
                 output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable. Try again when the servers are back up!'
             else:
-			    output += BotLocalizer.OCEANS_TOTAL % total
+                output += BotLocalizer.OCEANS_TOTAL % total
 
             # Response.
             await self.bot.say(output)
