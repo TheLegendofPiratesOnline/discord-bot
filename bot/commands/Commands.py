@@ -124,7 +124,7 @@ class Commands:
                         tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (
                                                     flag, i, msg)
                 elif s.get('status', 0) == 3:
-                    tmp = "\nThe Legend of Pirates Online is currently closed for an update. Check https://status.tlopo.com for more information!"
+                    tmp = "\nThe Legend of Pirates Online is currently closed for an update. Check https://status.tlopo.com for more information!\n"
                 else:
                     tmp = "\nNo known notices."
 
