@@ -45,7 +45,7 @@ class Commands:
                 total += k
 
             if s.get('status', 0) == 3:
-                output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable. Try again when the servers are back up!'
+                output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable.'
             else:
                 output += BotLocalizer.OCEANS_TOTAL % total
 
@@ -59,9 +59,12 @@ class Commands:
             """
 
             fleets = self.taskMgr.getActiveFleets()
+            s = self.taskMgr.getSystemStatus()
+            output = ""
 
-            if fleets:
-                output = ""
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Fleet data is unavailable.'
+            elif fleets:
                 for i, k in sorted(fleets.items()):
                     output += BotLocalizer.FLEET_ITEM_INFO % (i,
                                                             k.get('type'),
@@ -80,9 +83,12 @@ class Commands:
             """
 
             invasions = self.taskMgr.getActiveInvasions()
+            s = self.taskMgr.getSystemStatus()
+            output = ""
 
-            if invasions:
-                output = ""
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Invasion data is unavailable.'
+            elif invasions:
                 for i, k in sorted(invasions.items()):
                     output += BotLocalizer.INVASION_ITEM_INFO % (i,
                                                               k.get('location'),
@@ -118,7 +124,7 @@ class Commands:
                         tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (
                                                     flag, i, msg)
                 elif s.get('status', 0) == 3:
-                    tmp = "\nThe Legend of Pirates Online is currently closed for an update."
+                    tmp = "\nThe Legend of Pirates Online is currently closed for an update. Check https://status.tlopo.com for more information!"
                 else:
                     tmp = "\nNo known notices."
 
