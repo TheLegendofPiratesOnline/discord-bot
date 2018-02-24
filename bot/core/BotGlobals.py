@@ -52,17 +52,21 @@ BASE_CHANNEL_TO_NAME = {
     '403000000': 'Aventurado',
     '404000000': 'Belleza',
     '405000000': 'Bequermo',
-    '406000000': 'Exuma',
-    '407000000': 'Jovencito',
-    '408000000': 'Juntos',
-    '409000000': 'Ladrones',
-    '410000000': 'Levanta',
-    '411000000': 'Marineros',
-    '412000000': 'Nocivo',
-    '413000000': 'Poderoso',
-    '414000000': 'Sabada',
-    '415000000': 'Temprano',
-    '416000000': 'Valor'
+    '406000000': 'Cortos',
+    '407000000': 'Deseano',
+    '408000000': 'Exuma',
+    '409000000': 'Fragilles',
+    '410000000': 'Jovencito',
+    '411000000': 'Juntos',
+    '412000000': 'Kokojillo',
+    '413000000': 'Ladrones',
+    '414000000': 'Levanta',
+    '415000000': 'Marineros',
+    '416000000': 'Nocivo',
+    '417000000': 'Poderoso',
+    '418000000': 'Sabada',
+    '419000000': 'Temprano',
+    '420000000': 'Valor'
 }
 
 STATUS_ALIVE_SRV = 1
