@@ -19,12 +19,12 @@ APP_DESCRIPTION = "Discord bot by TLOPO. <3  https://github.com/TheLegendofPirat
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
 SETTINGS_FILENAME = 'settings.json'
 
-# API Docs: https://piratesonline.co/docs/
+# API Docs: https://tlopo.com/docs/
 API_URLS = {
-    'news_feed':'https://api.piratesonline.co/news/feed/',
-    'news_notification':'https://api.piratesonline.co/news/notification',
-    'shards':'https://api.piratesonline.co/shards',
-    'system_status':'https://api.piratesonline.co/system/status'
+    'news_feed':'https://api.tlopo.com/news/feed/',
+    'news_notification':'https://api.tlopo.com/news/notification',
+    'shards':'https://api.tlopo.com/shards',
+    'system_status':'https://api.tlopo.com/system/status'
 }
 
 BOT_TASKS = {
