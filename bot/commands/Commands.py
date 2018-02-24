@@ -37,13 +37,17 @@ class Commands:
 
             output = ""
             oceans = self.taskMgr.getOceanPopulations()
+            s = self.taskMgr.getSystemStatus()
             total = 0
 
             for i, k in sorted(oceans.items()):
                 output += "%s: %s\n" % (i, k)
                 total += k
 
-            output += BotLocalizer.OCEANS_TOTAL % total
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable. Try again when the servers are back up!'
+            else:
+                output += BotLocalizer.OCEANS_TOTAL % total
 
             # Response.
             await self.bot.say(output)
@@ -122,4 +126,15 @@ class Commands:
             else:
                 output = "System status is unknown."
 
+            await self.bot.say(output)
+
+        @self.bot.command()
+        async def ping(*args):
+            """
+            Returns a simple message to check if the bot is operating properly.
+            """
+
+            output = 'Pong!'
+            
+            # Response
             await self.bot.say(output)
