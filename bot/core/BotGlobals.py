@@ -19,12 +19,12 @@ APP_DESCRIPTION = "Discord bot by TLOPO. <3  https://github.com/TheLegendofPirat
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
 SETTINGS_FILENAME = 'settings.json'
 
-# API Docs: https://piratesonline.co/docs/
+# API Docs: https://tlopo.com/docs/
 API_URLS = {
-    'news_feed':'https://api.piratesonline.co/news/feed/',
-    'news_notification':'https://api.piratesonline.co/news/notification',
-    'shards':'https://api.piratesonline.co/shards',
-    'system_status':'https://api.piratesonline.co/system/status'
+    'news_feed':'https://api.tlopo.com/news/feed/',
+    'news_notification':'https://api.tlopo.com/news/notification',
+    'shards':'https://api.tlopo.com/shards',
+    'system_status':'https://api.tlopo.com/system/status'
 }
 
 BOT_TASKS = {
@@ -52,17 +52,21 @@ BASE_CHANNEL_TO_NAME = {
     '403000000': 'Aventurado',
     '404000000': 'Belleza',
     '405000000': 'Bequermo',
-    '406000000': 'Exuma',
-    '407000000': 'Jovencito',
-    '408000000': 'Juntos',
-    '409000000': 'Ladrones',
-    '410000000': 'Levanta',
-    '411000000': 'Marineros',
-    '412000000': 'Nocivo',
-    '413000000': 'Poderoso',
-    '414000000': 'Sabada',
-    '415000000': 'Temprano',
-    '416000000': 'Valor'
+    '406000000': 'Cortos',
+    '407000000': 'Deseano',
+    '408000000': 'Exuma',
+    '409000000': 'Fragilles',
+    '410000000': 'Jovencito',
+    '411000000': 'Juntos',
+    '412000000': 'Kokojillo',
+    '413000000': 'Ladrones',
+    '414000000': 'Levanta',
+    '415000000': 'Marineros',
+    '416000000': 'Nocivo',
+    '417000000': 'Poderoso',
+    '418000000': 'Sabada',
+    '419000000': 'Temprano',
+    '420000000': 'Valor'
 }
 
 STATUS_ALIVE_SRV = 1

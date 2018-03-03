@@ -37,13 +37,17 @@ class Commands:
 
             output = ""
             oceans = self.taskMgr.getOceanPopulations()
+            s = self.taskMgr.getSystemStatus()
             total = 0
 
             for i, k in sorted(oceans.items()):
                 output += "%s: %s\n" % (i, k)
                 total += k
 
-            output += BotLocalizer.OCEANS_TOTAL % total
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable.'
+            else:
+                output += BotLocalizer.OCEANS_TOTAL % total
 
             # Response.
             await self.bot.say(output)
@@ -55,9 +59,12 @@ class Commands:
             """
 
             fleets = self.taskMgr.getActiveFleets()
+            s = self.taskMgr.getSystemStatus()
+            output = ""
 
-            if fleets:
-                output = ""
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Fleet data is unavailable.'
+            elif fleets:
                 for i, k in sorted(fleets.items()):
                     output += BotLocalizer.FLEET_ITEM_INFO % (i,
                                                             k.get('type'),
@@ -76,9 +83,12 @@ class Commands:
             """
 
             invasions = self.taskMgr.getActiveInvasions()
+            s = self.taskMgr.getSystemStatus()
+            output = ""
 
-            if invasions:
-                output = ""
+            if s.get('status', 0) == 3:
+                output = 'The Legend of Pirates Online is currently closed for an update. Invasion data is unavailable.'
+            elif invasions:
                 for i, k in sorted(invasions.items()):
                     output += BotLocalizer.INVASION_ITEM_INFO % (i,
                                                               k.get('location'),
@@ -114,7 +124,7 @@ class Commands:
                         tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (
                                                     flag, i, msg)
                 elif s.get('status', 0) == 3:
-                    tmp = "\nThe Legend of Pirates Online is currently closed for an update."
+                    tmp = "\nThe Legend of Pirates Online is currently closed for an update. Check https://status.tlopo.com for more information!\n"
                 else:
                     tmp = "\nNo known notices."
 
@@ -122,4 +132,15 @@ class Commands:
             else:
                 output = "System status is unknown."
 
+            await self.bot.say(output)
+
+        @self.bot.command()
+        async def ping(*args):
+            """
+            Returns a simple message to check if the bot is operating properly.
+            """
+
+            output = 'Pong!'
+            
+            # Response
             await self.bot.say(output)
