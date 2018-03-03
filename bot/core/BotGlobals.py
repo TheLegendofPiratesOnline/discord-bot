@@ -47,26 +47,18 @@ BOT_TASKS = {
 }
 
 BASE_CHANNEL_TO_NAME = {
-    '401000000': 'Abassa',
-    '402000000': 'Andaba',
-    '403000000': 'Aventurado',
-    '404000000': 'Belleza',
-    '405000000': 'Bequermo',
-    '406000000': 'Cortos',
-    '407000000': 'Deseano',
-    '408000000': 'Exuma',
-    '409000000': 'Fragilles',
-    '410000000': 'Jovencito',
-    '411000000': 'Juntos',
-    '412000000': 'Kokojillo',
-    '413000000': 'Ladrones',
-    '414000000': 'Levanta',
-    '415000000': 'Marineros',
-    '416000000': 'Nocivo',
-    '417000000': 'Poderoso',
-    '418000000': 'Sabada',
-    '419000000': 'Temprano',
-    '420000000': 'Valor'
+    401000000: 'Abassa',
+    402000000: 'Andaba',
+    403000000: 'Bequermo',
+    404000000: 'Cortos',
+    405000000: 'Exuma',
+    406000000: 'Fragilles',
+    407000000: 'Juntos',
+    408000000: 'Kokojillo',
+    409000000: 'Levanta',
+    410000000: 'Nocivo',
+    411000000: 'Sabada',
+    412000000: 'Valor'
 }
 
 STATUS_ALIVE_SRV = 1
