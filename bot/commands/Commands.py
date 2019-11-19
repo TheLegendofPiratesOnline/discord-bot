@@ -29,8 +29,8 @@ class Commands:
         # Right now, this is really disgusting - but it works!
         # TODO: Rewrite.
 
-        @self.bot.command()
-        async def oceans(*args):
+        @self.bot.command(pass_context=True)
+        async def oceans(ctx):
             """
             Returns server populations.
             """
@@ -50,10 +50,10 @@ class Commands:
                 output += BotLocalizer.OCEANS_TOTAL % total
 
             # Response.
-            await self.bot.say(output)
+            await ctx.send(output)
 
-        @self.bot.command()
-        async def fleets(*args):
+        @self.bot.command(pass_context=True)
+        async def fleets(ctx):
             """
             Returns active fleets.
             """
@@ -74,10 +74,10 @@ class Commands:
                 output = "No active fleets."
 
             # Response.
-            await self.bot.say(output)
+            await ctx.send(output)
 
-        @self.bot.command()
-        async def invasions(*args):
+        @self.bot.command(pass_context=True)
+        async def invasions(ctx):
             """
             Returns active invasions.
             """
@@ -99,10 +99,10 @@ class Commands:
                 output = "No active invasions."
 
             # Response.
-            await self.bot.say(output)
+            await ctx.send(output)
 
-        @self.bot.command()
-        async def status(*args):
+        @self.bot.command(pass_context=True)
+        async def status(ctx):
             """
             Returns current server status.
             """
@@ -132,10 +132,10 @@ class Commands:
             else:
                 output = "System status is unknown."
 
-            await self.bot.say(output)
+            await ctx.send(output)
 
-        @self.bot.command()
-        async def ping(*args):
+        @self.bot.command(pass_context=True)
+        async def ping(ctx):
             """
             Returns a simple message to check if the bot is operating properly.
             """
@@ -143,4 +143,4 @@ class Commands:
             output = 'Pong!'
             
             # Response
-            await self.bot.say(output)
+            await ctx.send(output)
