@@ -29,7 +29,7 @@ class Commands:
         # Right now, this is really disgusting - but it works!
         # TODO: Rewrite.
 
-        @self.bot.command(pass_context=True)
+        @self.bot.command()
         async def oceans(ctx):
             """
             Returns server populations.
@@ -52,7 +52,7 @@ class Commands:
             # Response.
             await ctx.send(output)
 
-        @self.bot.command(pass_context=True)
+        @self.bot.command()
         async def fleets(ctx):
             """
             Returns active fleets.
@@ -76,7 +76,7 @@ class Commands:
             # Response.
             await ctx.send(output)
 
-        @self.bot.command(pass_context=True)
+        @self.bot.command()
         async def invasions(ctx):
             """
             Returns active invasions.
@@ -101,7 +101,7 @@ class Commands:
             # Response.
             await ctx.send(output)
 
-        @self.bot.command(pass_context=True)
+        @self.bot.command()
         async def status(ctx):
             """
             Returns current server status.
@@ -134,7 +134,7 @@ class Commands:
 
             await ctx.send(output)
 
-        @self.bot.command(pass_context=True)
+        @self.bot.command()
         async def ping(ctx):
             """
             Returns a simple message to check if the bot is operating properly.
