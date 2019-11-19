@@ -70,7 +70,7 @@ class BotCore(Commands.Commands):
 
             # This bot is not in any servers yet, let's print the URL that they would use
             # to add the bot to a server.  Just in case they don't know it.
-            if len(self.bot.servers) == 0:
+            if len(self.bot.guilds) == 0:
                 print(":BotCore: To connect this bot to a server, please use the following url:\n")
                 print('    https://discordapp.com/oauth2/authorize?client_id=%s&scope=bot&permissions=8' % self.bot.user.id)
 
