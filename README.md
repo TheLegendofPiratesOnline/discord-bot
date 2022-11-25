@@ -3,6 +3,7 @@ Public discord bot that utilizes [TLOPO's APIs](https://thelegendofpiratesonline
 
 ## Prerequisites
 In order to run this Discord bot, you need to have Python 3 installed on your system. You can grab the latest version from [here](https://www.python.org/downloads/).
+
 ## Installation
 The following procedure documents how to set up the TLOPO Discord Bot.
 
