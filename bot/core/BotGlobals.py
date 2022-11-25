@@ -49,14 +49,18 @@ BOT_TASKS = {
 BASE_CHANNEL_TO_NAME = {
     '401000000': 'Abassa',
     '402000000': 'Andaba',
+    '414000000': 'Aventurado',
     '403000000': 'Bequermo',
     '404000000': 'Cortos',
     '405000000': 'Exuma',
     '406000000': 'Fragilles',
+    '415000000': 'Jovencito',
     '407000000': 'Juntos',
     '408000000': 'Kokojillo',
     '409000000': 'Levanta',
+    '413000000': 'Marineros',
     '410000000': 'Nocivo',
+    '416000000': 'Poderoso',
     '411000000': 'Sabada',
     '412000000': 'Valor'
 }
