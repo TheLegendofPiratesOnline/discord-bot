@@ -16,27 +16,25 @@ in Discord channels where English is the spoken language.
 All strings in this class will be in English only.
 """
 
+import discord
+
 OUT_OF_DATE = "This bot is out of date. Please update by visiting https://github.com/TheLegendofPiratesOnline/discord-bot"
 
-FLEET_ITEM_INFO = '''
-%s:
-    - Type: %s
-    - State: %s
-    - Ships Remaining: %s
+FLEET_ITEM_INFO = '''- Type: %s
+- State:  %s
+- Ships Remaining:  %s
 '''
 
-INVASION_ITEM_INFO = '''
-%s:
-    - Location: %s
-    - State: %s
-    - Phase: %s
-    - Num Players: %s
+INVASION_ITEM_INFO = '''- State:  %s
+- Phase:  %s
+- Num Players:  %s
 '''
 
-SYSTEM_STATUS_INFO = '''
-Overall Status: **%s**
-%s
+SYSTEM_STATUS_INFO = '''%s
 Reported Outages: %s
 '''
 
-OCEANS_TOTAL = '\nTotal: **%s**'
+OVER_ALL_STATUS = '''Overall Status: **%s**
+'''
+
+updateErrorEmbed = discord.Embed(title="**The Legend of Pirates Online is currently closed for an update**", description="**%s**", color=0xff0000)

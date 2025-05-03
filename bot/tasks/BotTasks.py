@@ -71,6 +71,7 @@ class BotTasks:
             out['status'] = resp.get('status')
             out['notices'] = resp.get('notices', 0) or None
             out['outages'] = outages or None
+            out['servers'] =resp.get('servers')
             self.setSystemStatus(out)
 
     def task_shards(self, name, task):
