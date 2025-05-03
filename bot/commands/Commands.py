@@ -8,7 +8,15 @@
 # All use of this software is subject to the terms of the revised BSD
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
+#
+# ---------------------------Embed Update---------------------------
+# Author: TheBanditOfRed
+# Date: May ,2024
 
+
+# why do i always write code at 2am............
+
+import discord
 from discord.ext import commands
 
 from bot.language import BotLocalizer
@@ -26,31 +34,39 @@ class Commands:
     """
 
     def __init__(self):
-        # Right now, this is really disgusting - but it works!
-        # TODO: Rewrite.
+        # Right now, this is really disgusting - but it works!   --------   no kidding............
+        # TODO: Rewrite.   ----------   i guess ill be taking care of that then
+        
 
         @self.bot.command()
         async def oceans(ctx):
+
             """
             Returns server populations.
             """
 
-            output = ""
-            oceans = self.taskMgr.getOceanPopulations()
             s = self.taskMgr.getSystemStatus()
-            total = 0
-
-            for i, k in sorted(oceans.items()):
-                output += "%s: %s\n" % (i, k)
-                total += k
 
             if s.get('status', 0) == 3:
                 output = 'The Legend of Pirates Online is currently closed for an update. Ocean data is unavailable.'
             else:
-                output += BotLocalizer.OCEANS_TOTAL % total
 
+                output = ""
+                oceans = self.taskMgr.getOceanPopulations()
+                total = 0
+
+                embed = discord.Embed(title="**Ocean Populations**", color=0x0066ff)
+
+                for i, k in sorted(oceans.items()):
+                    #output += "%s: %s\n" % (i, k)
+                    discord.Embed.add_field(embed, name=i, value=k, inline=False)
+                    total += k
+
+
+            discord.Embed.add_field(embed, name="Total", value="**%s**" % total, inline=False)  #UPDATE LOCALIZER TO WORK WITH NEW SYNTAX ---------------------------------------------
+                
             # Response.
-            await ctx.send(output)
+            await ctx.send(embed=embed)
 
         @self.bot.command()
         async def fleets(ctx):
