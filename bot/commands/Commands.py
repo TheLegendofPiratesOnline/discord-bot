@@ -39,7 +39,7 @@ class Commands:
             s = self.taskMgr.getSystemStatus()
 
             if s.get('status', 0) == 3:
-                embed = BotLocalizer.updateErrorEmbed % "Ocean population data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Ocean population data is unavailable"
 
             else:
                 oceans = self.taskMgr.getOceanPopulations()
@@ -69,7 +69,7 @@ class Commands:
             activeFleetCount = 0
             
             if s.get('status', 0) == 3:
-                embed = BotLocalizer.updateErrorEmbed % "Fleet data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Fleet data is unavailable"
 
             elif fleets:
                 embed = discord.Embed(title="**Active Fleets**", color=0x0066ff)
@@ -100,7 +100,7 @@ class Commands:
             activeInvasionCount = 0
 
             if s.get('status', 0) == 3:
-                embed = BotLocalizer.updateErrorEmbed % "Invasion data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Invasion data is unavailable"
 
             else:
                 embed = discord.Embed(title="**Active Invasions**", color=0x0066ff)
@@ -142,7 +142,7 @@ class Commands:
                         flag = BotGlobals.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
                         tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (flag, i, msg)
                 elif s.get('status', 0) == 3:
-                    embed = BotLocalizer.updateErrorEmbed % "Visit https://tlopo.com/ for more information."
+                    embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
                     return
                 else:
                     tmp = "No known notices."
@@ -199,7 +199,7 @@ class Commands:
                 discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
             
             elif s.get('status', 0) == 3:
-                embed = BotLocalizer.updateErrorEmbed % "Visit https://tlopo.com/ for more information."
+                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
 
             else:
                 embed = discord.Embed(title="Server Status Unavailable", color=0xff0000)
@@ -234,7 +234,7 @@ class Commands:
                 discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
 
             elif s.get('status', 0) == 3:
-                embed = BotLocalizer.updateErrorEmbed % "Visit https://tlopo.com/ for more information."
+                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
             
             else:
                 embed = discord.Embed(title="Server Status Unavailable", color=0xff0000)
