@@ -224,40 +224,24 @@ class Commands:
 
             s = self.taskMgr.getSystemStatus()
             servers = s.get('servers')
-            web= servers.get('web', [])
-            ca = servers.get('client_agents', [])
-            o = servers.get('oceans', [])
-            gsf = servers.get('gameserver_functions', [])
+            webs = servers.get('web', [])
+            cas = servers.get('client_agents', [])
+            ais = servers.get('oceans', [])
+            uds = servers.get('gameserver_functions', [])
 
             embed = discord.Embed(title="**Server Status**", color=0x0066ff)
 
             if s:
-                tmp = ""
-                for server in web:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
-
-                tmp = ""
-                for server in ca:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Client Agents**", value=tmp, inline=False)
-
-                tmp = ""
-                for server in o:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Oceans**", value=tmp, inline=False)
-
-                tmp = ""
-                for server in gsf:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Gameserver Functions**", value=tmp, inline=False)
+                servers = [webs, cas, ais, uds)
+                for backend in servers:
+                    tmp = ""
+                    for server in backend:
+                        flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
+                        tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+                    discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
 
                 discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
-            
+
             elif s.get('status', 0) == 3:
                 embed = BotLocalizer.updateErrorEmbed % "Visit https://tlopo.com/ for more information."
             
