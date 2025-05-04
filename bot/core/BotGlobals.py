@@ -19,7 +19,7 @@ APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n\n https://github.com/TheLegendofP
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
 SETTINGS_FILENAME = 'settings.json'
 
-# API Docs: https://tlopo.com/docs/             ----------------         would be nice if it was updated...........
+# API Docs: https://tlopo.com/docs/
 API_URLS = {
     'news_feed':'https://api.tlopo.com/news/feed/',
     'news_notification':'https://api.tlopo.com/news/notification',
