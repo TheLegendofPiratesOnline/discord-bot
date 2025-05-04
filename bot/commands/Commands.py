@@ -27,9 +27,7 @@ class Commands:
     """
 
     def __init__(self):
-        # Right now, this is really disgusting - but it works!   --------   no kidding............
-        # TODO: Rewrite.   ----------   i guess ill be taking care of that then
-        
+        # TODO: Rewrite to be cleaner.
 
         @self.bot.command()
         async def oceans(ctx):
