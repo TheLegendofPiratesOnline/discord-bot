@@ -241,13 +241,29 @@ class Commands:
             embed = discord.Embed(title="**Server Status**", color=0x0066ff)
 
             if system_status:
-                servers = [webs, cas, ais, uds)
-                for backend in servers:
-                    tmp = ""
-                    for server in backend:
-                        flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
-                        tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                    discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
+                tmp = ""
+                for server in webs:
+                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+                discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
+
+                tmp = ""
+                for server in cas:
+                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+                discord.Embed.add_field(embed, name="**Client Agents**", value=tmp, inline=False)
+
+                tmp = ""
+                for server in ais:
+                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+                discord.Embed.add_field(embed, name="**Oceans**", value=tmp, inline=False)
+
+                tmp = ""
+                for server in uds:
+                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+                discord.Embed.add_field(embed, name="**Gameserver Functions**", value=tmp, inline=False)
 
                 discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
 
