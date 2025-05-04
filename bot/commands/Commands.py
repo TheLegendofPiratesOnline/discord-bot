@@ -8,13 +8,6 @@
 # All use of this software is subject to the terms of the revised BSD
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
-#
-# ---------------------------Embed Update---------------------------
-# Author: TheBanditOfRed
-# Date: May ,2024
-
-
-# why do i always write code at 2am............
 
 import discord
 from discord.ext import commands
