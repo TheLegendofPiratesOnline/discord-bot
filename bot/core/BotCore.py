@@ -9,6 +9,7 @@
 # license.  You should have received a copy of this license along
 # with this source code in a file named "LICENSE."
 
+import discord
 from discord.ext import commands
 
 from bot.core import BotGlobals, BotSettings
@@ -45,8 +46,11 @@ class BotCore(Commands.Commands):
             self.settings.loadSettings(BotGlobals.LOCAL_SETTINGS_FILENAME, override=True)
 
         # Create the bot using Discord's API.
-        self.bot = commands.Bot(description=BotGlobals.APP_DESCRIPTION,
-                       command_prefix=self.settings.getSetting('commandPrefix'))
+        intents = discord.Intents.default()
+        intents.message_content = True
+        intents.members = True
+
+        self.bot = commands.Bot(description=BotGlobals.APP_DESCRIPTION, command_prefix=self.settings.getSetting('commandPrefix'), intents=intents)
 
         # Initialize taskMgr.
         self.taskMgr = BotTasks.BotTasks()
@@ -54,6 +58,8 @@ class BotCore(Commands.Commands):
 
         # Initialize the Commands class.
         Commands.Commands.__init__(self)
+
+        self.bot.remove_command('help')
 
         @self.bot.event
         async def on_ready():
