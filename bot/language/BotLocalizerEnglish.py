@@ -37,4 +37,4 @@ Reported Outages: %s
 OVER_ALL_STATUS = '''Overall Status: **%s**
 '''
 
-updateErrorEmbed = discord.Embed(title="**The Legend of Pirates Online is currently closed for an update**", description="**%s**", color=0xff0000)
+MSG_CLOSED_SERVERS = discord.Embed(title="**The Legend of Pirates Online is currently closed for an update**", description="**%s**", color=0xff0000)
