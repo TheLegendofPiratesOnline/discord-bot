@@ -13,7 +13,7 @@ import discord
 from discord.ext import commands
 
 from bot.language import BotLocalizer
-from bot.core import BotGlobals
+from bot.core import BotGlobals, BotCore
 
 from datetime import datetime
 
@@ -83,6 +83,21 @@ class Commands:
                 value=authors,
                 inline=False
             )
+
+            if self.settings.getSetting('showLink') == True:
+                discord.Embed.add_field(
+                    embed,
+                    name=BotLocalizer.STATUS_MESSAGES[12],
+                    value=self.settings.getSetting('link'),
+                    inline=False
+                )
+            else:
+                discord.Embed.add_field(
+                    embed,
+                    name=BotLocalizer.STATUS_MESSAGES[12],
+                    value=BotLocalizer.STATUS_MESSAGES[0],
+                    inline=False
+                )
 
             await ctx.send(embed=embed)
 

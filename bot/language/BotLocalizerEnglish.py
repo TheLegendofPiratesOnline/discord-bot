@@ -76,8 +76,9 @@ STATUS_MESSAGES = [
     'Invasion data is unavailable',  # 7
     'Visit https://tlopo.com/ for more information.',  # 8
     'Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.',  # 9
-    'Unknown'  # 10
-    'No data available'  # 11
+    'Unknown',  # 10
+    'No data available',  # 11
+    'Add me to your server!' # 12
 ]
 
 # WILL RENAME LIST WHEN MORE BITS ARE ADDED

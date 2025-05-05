@@ -46,6 +46,14 @@ class BotCore(Commands.Commands):
             # the local settings will override the regular.
             self.settings.loadSettings(BotGlobals.LOCAL_SETTINGS_FILENAME, override=True)
 
+        # Get language with default fallback
+        language = self.settings.getSetting('language')
+        if not language:
+            language = 'en-us'
+        
+        # Import language module
+        BotLocalizer.importLanguageModule(language)
+
         # Create the bot using Discord's API.
         intents = discord.Intents.default()
         intents.message_content = True

@@ -20,20 +20,25 @@ language.
 Those files will have the same name as this class +
 the language they are in.  For example, BotLocalizerEnglish.
 """
-
-def importLanguageModule(module):
+def importLanguageModule(module='en-us'):
     """
     Imports other language modules and places them
     into the globals.
     """
-
     try:
-        x = __import__(module, {}, {}, ['bot.language'])
+        language_modules = {
+            'en-us': 'BotLocalizerEnglish',
+            'pt-pt': 'BotLocalizerPortuguese',
+        }
+
+        module_name = 'bot.language.%s' % language_modules.get(module, 'BotLocalizerEnglish')
+        x = __import__(module_name, {}, {}, ['bot.language'])
     except ImportError:
+        print(":BotLocalizer: Faild to load %s language, falling back to English") % module
         x = __import__('bot.language.BotLocalizerEnglish', {}, {}, ['bot.language'])
     globals().update(x.__dict__)
 
-## TODO: Process other languages from settings.
-#        use translation plugin to translate strings if enabled in settings.
+# Default to English initially
+importLanguageModule('en-us')
 
-importLanguageModule('English')
+# The language will be properly set when BotCore initializes
