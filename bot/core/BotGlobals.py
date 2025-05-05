@@ -14,10 +14,9 @@ The BotGlobals class will serve as a central location
 of all global values in the TLOPO Discord Bot project.
 """
 
-APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n\n https://github.com/TheLegendofPiratesOnline/discord-bot"
-
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
 SETTINGS_FILENAME = 'settings.json'
+AUTHORS_FILENAME = 'authors.md'
 
 # API Docs: https://tlopo.com/docs/
 API_URLS = {
@@ -127,4 +126,24 @@ GLOB_CODE_TO_EMOJI = {
     STATUS_ERROR_GLOB_EMOJI:   ":red_circle:",
     STATUS_FATAL_GLOB_EMOJI:   ":red_circle:",
     STATUS_UNKNOWN_GLOB_EMOJI: ":red_circle:"
+}
+
+EMBED_COLOR = {
+    'help': 0x3498db,      # Blue
+    'about': 0x9b59b6,     # Purple
+    'status': 0x2ecc71,    # Green
+    'fullstatus': 0x27ae60, # Dark Green
+    'oceans': 0x1abc9c,    # Turquoise
+    'fleets': 0xe67e22,    # Orange
+    'invasions': 0xe74c3c, # Red
+    'notices': 0xf1c40f,   # Yellow
+    'error': 0xff0000,     # Bright Red
+    'warning': 0xf39c12,   # Amber
+    'offline': 0x95a5a6    # Gray
+}
+
+FORMAT_STRINGS = {
+    'bold': '**%s**',
+    'server_status': '**%s**:  %s\n',
+    'notice_format': '\n**%s** | %s\n**%s:** *%s*\n'
 }

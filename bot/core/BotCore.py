@@ -13,6 +13,7 @@ import discord
 from discord.ext import commands
 
 from bot.core import BotGlobals, BotSettings
+from bot.language import BotLocalizer
 from bot.tasks import BotTasks
 
 from bot.commands import Commands
@@ -50,7 +51,8 @@ class BotCore(Commands.Commands):
         intents.message_content = True
         intents.members = True
 
-        self.bot = commands.Bot(description=BotGlobals.APP_DESCRIPTION, command_prefix=self.settings.getSetting('commandPrefix'), intents=intents)
+        self.bot = commands.Bot(description=BotLocalizer.APP_DESCRIPTION, command_prefix=self.settings.getSetting('commandPrefix'), intents=intents)
+        self.bot.remove_command('help')
 
         # Initialize taskMgr.
         self.taskMgr = BotTasks.BotTasks()
@@ -58,8 +60,6 @@ class BotCore(Commands.Commands):
 
         # Initialize the Commands class.
         Commands.Commands.__init__(self)
-
-        self.bot.remove_command('help')
 
         @self.bot.event
         async def on_ready():
@@ -80,4 +80,4 @@ class BotCore(Commands.Commands):
                 print(":BotCore: To connect this bot to a server, please use the following url:\n")
                 print('    https://discordapp.com/oauth2/authorize?client_id=%s&scope=bot&permissions=8' % self.bot.user.id)
 
-            print(':BotCore: %s' % BotGlobals.APP_DESCRIPTION)
+            print(':BotCore: %s' % BotLocalizer.APP_DESCRIPTION)

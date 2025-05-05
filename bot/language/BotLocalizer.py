@@ -34,4 +34,6 @@ def importLanguageModule(module):
     globals().update(x.__dict__)
 
 ## TODO: Process other languages from settings.
+#        use translation plugin to translate strings if enabled in settings.
+
 importLanguageModule('English')
