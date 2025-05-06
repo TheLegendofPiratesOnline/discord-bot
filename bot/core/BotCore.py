@@ -52,7 +52,7 @@ class BotCore(Commands.Commands):
             language = 'en-us'
         
         # Import language module
-        BotLocalizer.importLanguageModule(language)
+        BotLocalizer.importLanguageModule(language, self.settings.getSetting('autoTranslate'), self.settings.getSetting('debug'))
 
         # Create the bot using Discord's API.
         intents = discord.Intents.default()

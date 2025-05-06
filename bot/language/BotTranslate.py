@@ -7,61 +7,55 @@ from deep_translator import GoogleTranslator
 from bot.core import BotGlobals
 import re
 
-# Cant belive i learned regex for this at 3 am............ 
-# POV: its 4am and you finally got regex somewhat working XP
-def clean_translation_errors(file_path: str, debug: bool = False):
+def clean_translation_errors(file_path: str,stage: int, debug: bool = False):
     """
     Cleans up common translation and formatting errors from the generated file.
     
     Args:
         file_path (str): Path to the translated file
+        stage (int): What pattern stage to clean up
         debug (bool): Enable debug output
     """
-    cleanup_patterns = {
-        # Compound placeholders with text between them
-        r'__(\d+)__([a-z]+)__(\d+)__': r'__\1__ \2 __\3__',
-        
-        # Adjacent placeholders handling
-        r'__(\d+)____(\d+)____(\d+)__': r'__\1__ __\2__ __\3__',
-        r'__(\d+)____(\d+)__': r'__\1__ __\2__',
-        
-        # Numbers in placeholders
-        r'__(\d+)__(\d+)__(\d+)__': r'__\1__ __\2__ __\3__',
-        r'__(\d+)__(\d+)__': r'__\1__ __\2__',
-        
-        # Basic placeholder formatting
-        r'_{3,}(\d+)_{1,}': r'__\1__',
-        r'_{1,}(\d+)_{3,}': r'__\1__',
-        r'_(\d+)_': r'__\1__',
-        r'_{1,}(\d+)': r'__\1__',
-        r'(\d+)_{1,}': r'__\1__',
-        
-        # Spacing issues
-        r'__(\d+)\s+__': r'__\1__',
-        r'__\s+(\d+)__': r'__\1__',
-        
-        # Quotes and general formatting
-        r'"{2,}': '"',
-        r"'{2,}": "'",
-        r'"\s*,\s*"': '", "',
-        r"'\s*,\s*'": "', '",
-        r'\s*,\s*,+': ',',
-        r'\s*\.\s*\.+': '.',
-        r'\s+\n': '\n',
-        r'\n{3,}': '\n\n'
+    # Fix broken placeholders
+    STAGE_ONE_REGEX = {
+        r'\s*(\d+)\s*': r'\1'       # Removes spaces around digits
     }
+
+    # Clean up syntax errors caused by translation - expand as more errors are reported
+    # DO NOT REORDER
+    STAGE_TWO_REGEX = {
+        r'_{2,}': '',               # Removes extra underscores
+        r',{2,}': ',',              # Replaces multiple commas with a single comma
+        r'«': r"'",                 # Replaces left guillemet with single quote
+        r'»': r"'",                 # Replaces right guillemet with single quote
+        r'(?<!")".\n': r'",\n'      # Adds comma after quoted string at end of line if missing
+    }
+
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             file_content = f.read()
             if debug == True:
                 print('[DEBUG] Reading file: %s' % file_path)
-        
-        for pattern, replacement in cleanup_patterns.items():
-            file_content = re.sub(pattern, replacement, file_content, flags=re.MULTILINE)
 
-            if debug == True:
-                print('[DEBUG] Replacing pattern: %s with %s' % (pattern, replacement))
+        # Stage 1: Basic placeholder fixes
+        if stage == 1:
+            for pattern, replacement in STAGE_ONE_REGEX.items():
+                file_content = re.sub(pattern, replacement, file_content, flags=re.MULTILINE)
+
+                if debug == True:
+                    print('[DEBUG][STAGE 1] Replacing pattern: %s with %s' % (pattern, replacement))
+
+        # Stage 2: More complex syntax fixes (run after protected words are restored)
+        elif stage == 2:
+            for pattern, replacement in STAGE_TWO_REGEX.items():
+                file_content = re.sub(pattern, replacement, file_content, flags=re.MULTILINE)
+
+                if debug == True:
+                    print('[DEBUG][STAGE 2] Replacing pattern: %s with %s' % (pattern, replacement))
+        else:
+            print('[ERROR] Invalid stage number: %s' % stage)
+            return
         
         # Write cleaned content
         with open(file_path, 'w', encoding='utf-8') as f:
@@ -69,30 +63,8 @@ def clean_translation_errors(file_path: str, debug: bool = False):
             if debug == True:
                 print('[DEBUG] Writing cleaned content to file: %s' % file_path)
 
-        # Sanity pass ---------- bcs i swear im so close to throwing my computer out the window
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
+        f.close()
 
-        # Special case fixes ------------- i present the reason i nearly threw my computer out the window
-        # Enhanced final fixes with proper spacing between placeholders
-        final_fixes = content
-        # Fix cases where placeholders are touching
-        final_fixes = re.sub(r'__(\d+)____(\d+)__', r'__\1__ __\2__', final_fixes)
-        final_fixes = re.sub(r'__(\d+)____(\d+)____(\d+)__', r'__\1__ __\2__ __\3__', final_fixes)
-        # Fix placeholders with text between them
-        final_fixes = re.sub(r'__(\d+)__([a-z]+)__(\d+)__', r'__\1__ \2 __\3__', final_fixes)
-        # Fix trailing/leading placeholder issues
-        final_fixes = re.sub(r'[_]{2,}(\d+)[_]{0,3}([^_])', r'__\1__\2', final_fixes)
-        final_fixes = re.sub(r'([^_])[_]{0,3}(\d+)[_]{2,}', r'\1__\2__', final_fixes)
-        # One more pass on adjacent placeholders
-        final_fixes = re.sub(r'__(\d+)__(\d+)__', r'__\1__ __\2__', final_fixes)
-
-        if content != final_fixes:
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(final_fixes)
-                if debug:
-                    print('[DEBUG] Applied final safety fixes')
-    
     except Exception as e:
         print('[ERROR] Failed to clean translation errors: %s' % str(e))
 
@@ -106,6 +78,7 @@ def protect_words(line: str):
     Returns:
         str: Line with protected words replaced by placeholders
     """
+
     for i, word in enumerate(BotGlobals.PROTECTED_WORDS):
         if word in line:
             line = line.replace(word, '__%s__' % i)
@@ -127,9 +100,11 @@ def restore_protected_words(file_path: str, debug: bool = False):
         
         restored_file_content = file_content
         for i, word in enumerate(BotGlobals.PROTECTED_WORDS):
+            
             POSSIBLE_PATTERNS = [
                 '__%s__' % i
             ]
+
             for pattern in POSSIBLE_PATTERNS:
                 if pattern in restored_file_content:
                     restored_file_content = restored_file_content.replace(pattern, word)
@@ -141,52 +116,11 @@ def restore_protected_words(file_path: str, debug: bool = False):
             f.write(restored_file_content)
             if debug == True:
                 print('[DEBUG] Writing restored content to file: %s' % file_path)
+        
+        f.close()
     
     except Exception as e:
         print('[ERROR] Failed to restore protected words: %s' % str(e))
-
-
-def final_fixes(file_path: str, debug: bool = False):
-    """
-    Apply manual fixes for very specific issues that regex can't handle well.
-    
-    Args:
-        file_path (str): Path to the translated file
-        debug (bool): Enable debug output
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            
-        # Fix APP_DESCRIPTION line with broken placeholders
-        content = re.sub(
-            r'APP_DESCRIPTION\s*=\s*__\s*"([^"]+)"\s*__\s*__\s*', 
-            r'APP_DESCRIPTION = "\\1"', 
-            content
-        )
-        
-        # Fix array items with placeholders inside quotes
-        content = re.sub(
-            r"__'__\s*([^']+)", 
-            r"'\\1", 
-            content
-        )
-        
-        # Fix missing quotes in SYSTEM_STATUS_INFO
-        if "SYSTEM_STATUS_INFO = '''" in content and not "SYSTEM_STATUS_INFO = '''%s" in content:
-            content = content.replace(
-                "SYSTEM_STATUS_INFO = '''", 
-                "SYSTEM_STATUS_INFO = '''%s"
-            )
-            
-        # Write fixed content back
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-            if debug:
-                print('[DEBUG] Applied manual fixes')
-                
-    except Exception as e:
-        print('[ERROR] Failed to apply manual fixes: %s' % str(e))
 
 def translate(target_language: str, debug: bool = False):
     """
@@ -247,11 +181,6 @@ def translate(target_language: str, debug: bool = False):
                 print('[DEBUG] Adding line %s: %s to file' % (i, translated_line))
 
     translated_file.close()
-    
-    # Post-processing to clean up translation artifacts
-    clean_translation_errors(output_file, debug)
+    clean_translation_errors(output_file, 1, debug)
     restore_protected_words(output_file, debug)
-    final_fixes(output_file, debug)  # its 5am. i want to cry. this is why i refused to learn regex.
-
-translate('de', True)     #TESTING ONLY - REMOVE LATER
-#clean_translation_errors('bot/language/BotLocalizer_DE_AT.py', debug=True)  #TESTING ONLY - REMOVE LATER
+    clean_translation_errors(output_file, 2, debug)

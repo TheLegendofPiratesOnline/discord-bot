@@ -10,6 +10,7 @@
 # with this source code in a file named "LICENSE."
 
 from bot.core import BotGlobals
+from bot.language import BotLocalizer
 import threading
 import requests
 import json
@@ -63,7 +64,7 @@ class BotTasks:
                 outages = [j.get('name', 'Error-NoName')
                            for i in servers.keys()
                            for j in servers.get(i)
-                           if j.get('status') != BotGlobals.STATUS_ALIVE_SRV]
+                           if j.get('status') != BotLocalizer.STATUS_ALIVE_SRV]
             else:
                 outages = []
 

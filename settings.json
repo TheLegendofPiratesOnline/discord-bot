@@ -6,5 +6,6 @@
     "debug":false,
     "suppessWarnings":true,
     "link": "unset",
-    "showLink": false
+    "showLink": false,
+    "autoTranslate": false
 }

@@ -2,6 +2,8 @@ APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n https://github.com/TheLegendofPir
 
 OUT_OF_DATE = "This bot is out of date. Please update by visiting https://github.com/TheLegendofPiratesOnline/discord-bot"
 
+AUTO_TRANSLATE_WARNING = "This text has been auto-translated. There may be some errors"
+
 FLEET_ITEM_INFO = '''- Type: %s
 - State:  %s
 - Ships Remaining:  %s
@@ -20,47 +22,47 @@ OVER_ALL_STATUS = '''Overall Status: **%s**
 '''
 
 EMBED_TITLES = [
-    'Commands',
-    'About',
-    'Ocean Populations',
-    'Active Fleets',
-    'No active fleets',
-    'Active Invasions',
-    'No active invasions',
-    'Server Notices',
-    'Server Status',
-    'Server Status Unavailable',
-    'Server Notices Unavailable',
-    'The Legend of Pirates Online is currently closed for an update'
+    "Commands",
+    "About",
+    "Ocean Populations",
+    "Active Fleets",
+    "No active fleets",
+    "Active Invasions",
+    "No active invasions",
+    "Server Notices",
+    "Server Status",
+    "Server Status Unavailable",
+    "Server Notices Unavailable",
+    "The Legend of Pirates Online is currently closed for an update"
 ]
 
 FIELD_NAMES = [
-    'Authors',
-    'Total',
-    'Web Servers',
-    'Client Agents',
-    'Oceans',
-    'Gameserver Functions'
+    "Authors",
+    "Total",
+    "Web Servers",
+    "Client Agents",
+    "Oceans",
+    "Gameserver Functions"
 ]
 
 STATUS_MESSAGES = [
-    'No description available',
-    'No authors found.',
-    'No active fleet',
-    'No active invasion',
-    'No known notices.',
-    'Ocean population data is unavailable',
-    'Fleet data is unavailable',
-    'Invasion data is unavailable',
-    'Visit https://tlopo.com/ for more information.',
-    'Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.',
-    'Unknown',
-    'No data available',
-    'Add me to your server!'
+    "No description available",
+    "No authors found.",
+    "No active fleet",
+    "No active invasion",
+    "No known notices.",
+    "Ocean population data is unavailable",
+    "Fleet data is unavailable",
+    "Invasion data is unavailable",
+    "Visit https://tlopo.com/ for more information.",
+    "Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.",
+    "Unknown",
+    "No data available",
+    "Add me to your server!"
 ]
 
 MISC = [
-    'Message',
+    "Message",
 ]
 
 STATUS_ALIVE_SRV = 1

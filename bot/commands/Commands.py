@@ -99,6 +99,12 @@ class Commands:
                     inline=False
                 )
 
+            if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                discord.Embed.set_footer(
+                    embed,
+                    text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                )
+
             await ctx.send(embed=embed)
 
         @self.bot.command()
@@ -139,6 +145,12 @@ class Commands:
                     name=BotLocalizer.FIELD_NAMES[1],
                     value=BotGlobals.FORMAT_STRINGS.get('bold') % total,
                     inline=False
+                )
+
+            if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                discord.Embed.set_footer(
+                    embed,
+                    text= BotLocalizer.AUTO_TRANSLATE_WARNING,
                 )
                 
             # Response.
@@ -191,6 +203,11 @@ class Commands:
                 if activeFleetCount != len(fleets.items()):
                     embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[4], color=BotGlobals.EMBED_COLOR.get('fleets'))
 
+            if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                discord.Embed.set_footer(
+                    embed,
+                    text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                )
 
             # Response.
             await ctx.send(embed=embed)
@@ -241,6 +258,12 @@ class Commands:
                 if activeInvasionCount == len(invasions.items()):
                     embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[6], color=BotGlobals.EMBED_COLOR.get('invasions'))
 
+            if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                discord.Embed.set_footer(
+                    embed,
+                    text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                )
+
             # Response.
             await ctx.send(embed=embed)
 
@@ -284,15 +307,28 @@ class Commands:
                     value=BotLocalizer.SYSTEM_STATUS_INFO % (tmp, outages),
                     inline=False
                 )
-
+                
+                # Autotranslate warning.
                 # User warning that api isnt reading prod-gs-1.tlopo.com correctly. Remove when fixed.
-                discord.Embed.set_footer(
-                    embed,
-                    text= BotLocalizer.STATUS_MESSAGES[9]
-                )
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= "%s\n%s" % (BotLocalizer.STATUS_MESSAGES[9], BotLocalizer.AUTO_TRANSLATE_WARNING)
+                    )
+                else:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.STATUS_MESSAGES[9]
+                    )
 
             else:
                 embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[10], color=BotGlobals.EMBED_COLOR.get('error'))
+
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                    )
 
             await ctx.send(embed=embed)
 
@@ -363,11 +399,18 @@ class Commands:
                     inline=False
                 )
 
+                # Autotranslate warning.
                 # User warning that api isnt reading prod-gs-1.tlopo.com correctly. Remove when fixed.
-                discord.Embed.set_footer(
-                    embed,
-                    text= BotLocalizer.STATUS_MESSAGES[9]
-                )
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= "%s\n%s" % (BotLocalizer.STATUS_MESSAGES[9], BotLocalizer.AUTO_TRANSLATE_WARNING)
+                    )
+                else:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.STATUS_MESSAGES[9]
+                    )
             
             elif system_status.get('status', 0) == 3:
                 embed = discord.Embed(
@@ -376,11 +419,23 @@ class Commands:
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
 
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                    )
+
             else:
                 embed = discord.Embed(
                     title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[9],
                     color=BotGlobals.EMBED_COLOR.get('error')
                 )
+
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                    )
 
             await ctx.send(embed=embed)
         
@@ -454,20 +509,42 @@ class Commands:
                     inline=False
                 )
 
+                # Autotranslate warning.
                 # User warning that api isnt reading prod-gs-1.tlopo.com correctly. Remove when fixed.
-                discord.Embed.set_footer(
-                    embed,
-                    text= BotLocalizer.STATUS_MESSAGES[9]
-                )
-
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= "%s\n%s" % (BotLocalizer.STATUS_MESSAGES[9], BotLocalizer.AUTO_TRANSLATE_WARNING)
+                    )
+                else:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.STATUS_MESSAGES[9]
+                    )
+            
             elif system_status.get('status', 0) == 3:
                 embed = discord.Embed(
                     title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
                     description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
-            
+
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                    )
+
             else:
-                embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[9], color=BotGlobals.EMBED_COLOR.get('error'))
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[9],
+                    color=BotGlobals.EMBED_COLOR.get('error')
+                )
+
+                if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+                    discord.Embed.set_footer(
+                        embed,
+                        text= BotLocalizer.AUTO_TRANSLATE_WARNING,
+                    )
 
             await ctx.send(embed=embed)
