@@ -16,12 +16,11 @@ in Discord channels where English is the spoken language.
 All strings in this class will be in English only.
 """
 
-import discord
+from bot.core import BotGlobals
 
+APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n %s" % BotGlobals.SOURCE_URL
 
-APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n https://github.com/TheLegendofPiratesOnline/discord-bot"
-
-OUT_OF_DATE = "This bot is out of date. Please update by visiting https://github.com/TheLegendofPiratesOnline/discord-bot"
+OUT_OF_DATE = "This bot is out of date. Please update by visiting %s" % BotGlobals.SOURCE_URL
 
 FLEET_ITEM_INFO = '''- Type: %s
 - State:  %s
@@ -40,8 +39,6 @@ Reported Outages: %s
 OVER_ALL_STATUS = '''Overall Status: **%s**
 '''
 
-MSG_CLOSED_SERVERS = discord.Embed(title="**The Legend of Pirates Online is currently closed for an update**", description="**%s**", color=0xff0000)
-
 EMBED_TITLES = [
     'Commands',  # 0
     'About',  # 1
@@ -53,7 +50,8 @@ EMBED_TITLES = [
     'Server Notices',  # 7
     'Server Status',  # 8
     'Server Status Unavailable',  # 9
-    'Server Notices Unavailable'  # 10
+    'Server Notices Unavailable',  # 10
+    'The Legend of Pirates Online is currently closed for an update'  # 11
 ]
 
 FIELD_NAMES = [
@@ -85,3 +83,35 @@ STATUS_MESSAGES = [
 MISC = [
     'Message',  # 0
 ]
+
+STATUS_ALIVE_SRV = 1
+STATUS_MESSAGE_SRV = 2
+STATUS_UPDATE_SRV = 4
+STATUS_ERROR_SRV = 8
+STATUS_FATAL_SRV = 16
+STATUS_UNKNOWN_SRV = 32
+
+SRV_CODE_TO_STATUS = {
+    STATUS_ALIVE_SRV:   "ALIVE",
+    STATUS_MESSAGE_SRV: "MESSAGE",
+    STATUS_UPDATE_SRV:  "UPDATE",
+    STATUS_ERROR_SRV:   "ERROR",
+    STATUS_FATAL_SRV:   "FATAL",
+    STATUS_UNKNOWN_SRV: "UNKNOWN"
+}
+
+STATUS_ALIVE_GLOB = 1
+STATUS_MESSAGE_GLOB = 2
+STATUS_UPDATE_GLOB = 3
+STATUS_ERROR_GLOB = 4
+STATUS_FATAL_GLOB = 5
+STATUS_UNKNOWN_GLOB = 6
+
+GLOB_CODE_TO_STATUS = {
+    STATUS_ALIVE_GLOB:   "ALIVE",
+    STATUS_MESSAGE_GLOB: "MESSAGE",
+    STATUS_UPDATE_GLOB:  "UPDATE",
+    STATUS_ERROR_GLOB:   "ERROR",
+    STATUS_FATAL_GLOB:   "FATAL",
+    STATUS_UNKNOWN_GLOB: "UNKNOWN"
+}

@@ -2,11 +2,8 @@
 A classe BotLocalizerPortuguese é utilizada para fornecer respostas
 em canais Discord onde se fala português.
 
-Todas as strings nesta classe estarão apenas em português.
+Todas as strings nesta classe estarão apenas em português(Portugal).
 """
-
-import discord
-
 
 APP_DESCRIPTION = "Bot Discord criado pela TLOPO. <3 \n https://github.com/TheLegendofPiratesOnline/discord-bot"
 
@@ -29,8 +26,6 @@ Falhas Reportadas: %s
 OVER_ALL_STATUS = '''Estado Geral: **%s**
 '''
 
-MSG_CLOSED_SERVERS = discord.Embed(title="**The Legend of Pirates Online está atualmente fechado para uma atualização**", description="**%s**", color=0xff0000)
-
 EMBED_TITLES = [
     'Comandos',  # 0
     'Sobre',  # 1
@@ -42,7 +37,8 @@ EMBED_TITLES = [
     'Avisos do Servidor',  # 7
     'Estado do Servidor',  # 8
     'Estado do Servidor Indisponível',  # 9
-    'Avisos do Servidor Indisponíveis'  # 10
+    'Avisos do Servidor Indisponíveis',  # 10
+    'The Legend of Pirates Online está atualmente fechado para uma atualização'  # 11
 ]
 
 FIELD_NAMES = [

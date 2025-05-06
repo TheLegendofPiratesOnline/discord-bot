@@ -7,3 +7,6 @@ __pycache__/
 
 # Local files.
 local_settings.json
+
+# Auto Generated Translations
+BotLocalizer_*_AT.py

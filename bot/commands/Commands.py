@@ -112,8 +112,8 @@ class Commands:
 
             if system_status.get('status', 0) == 3:
                 embed = discord.Embed(
-                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                    description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
 
@@ -157,8 +157,8 @@ class Commands:
             
             if system_status.get('status', 0) == 3:
                 embed = discord.Embed(
-                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                    description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
 
@@ -208,8 +208,8 @@ class Commands:
 
             if system_status.get('status', 0) == 3:
                 embed = discord.Embed(
-                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                    description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
 
@@ -254,7 +254,7 @@ class Commands:
             
             if system_status:
                 notices = system_status.get('notices')
-                status = BotGlobals.GLOB_CODE_TO_STATUS.get(int(system_status.get('status')), BotLocalizer.STATUS_MESSAGES[10])
+                status = BotLocalizer.GLOB_CODE_TO_STATUS.get(int(system_status.get('status')), BotLocalizer.STATUS_MESSAGES[10])
                 outages = system_status.get('outages')
 
                 embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[7], color=BotGlobals.EMBED_COLOR.get('notices'))
@@ -264,13 +264,13 @@ class Commands:
                     for i in notices.keys():
                         notice = notices[i]
                         msg = notice.get('text')
-                        flag = BotGlobals.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
+                        flag = BotLocalizer.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
                         tmp += BotGlobals.FORMAT_STRINGS.get('notice_format') % (flag, BotLocalizer.MISC[0], i, msg)
 
                 elif system_status.get('status', 0) == 3:
                     embed = discord.Embed(
-                        title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                        description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                        title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[12],
+                        description=BotLocalizer.STATUS_MESSAGES[8],
                         color=BotGlobals.EMBED_COLOR.get('offline')
                     )
                     return
@@ -371,8 +371,8 @@ class Commands:
             
             elif system_status.get('status', 0) == 3:
                 embed = discord.Embed(
-                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                    description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
 
@@ -409,7 +409,7 @@ class Commands:
                 # Add web server status to the embed.
                 tmp = ""
                 for server in webs:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
+                    flag = BotLocalizer.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
                     tmp += BotGlobals.FORMAT_STRINGS.get('server_status') % (server.get('name', BotLocalizer.STATUS_MESSAGES[10]), flag)
                 discord.Embed.add_field(
                     embed,
@@ -421,7 +421,7 @@ class Commands:
                 # Add client agent status to the embed.
                 tmp = ""
                 for server in cas:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
+                    flag = BotLocalizer.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
                     tmp += BotGlobals.FORMAT_STRINGS.get('server_status') % (server.get('name', BotLocalizer.STATUS_MESSAGES[10]), flag)
                 discord.Embed.add_field(
                     embed,
@@ -433,7 +433,7 @@ class Commands:
                 # Add ocean status to the embed.
                 tmp = ""
                 for server in ais:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
+                    flag = BotLocalizer.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
                     tmp += BotGlobals.FORMAT_STRINGS.get('server_status') % (server.get('name', BotLocalizer.STATUS_MESSAGES[10]), flag)
                 discord.Embed.add_field(
                     embed,
@@ -445,7 +445,7 @@ class Commands:
                 # Add gameserver functions status to the embed.
                 tmp = ""
                 for server in uds:
-                    flag = BotGlobals.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
+                    flag = BotLocalizer.GLOB_CODE_TO_STATUS.get(server.get('status', 0))
                     tmp += BotGlobals.FORMAT_STRINGS.get('server_status') % (server.get('name', BotLocalizer.STATUS_MESSAGES[10]), flag)
                 discord.Embed.add_field(
                     embed,
@@ -462,8 +462,8 @@ class Commands:
 
             elif system_status.get('status', 0) == 3:
                 embed = discord.Embed(
-                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[8],
-                    description=BotLocalizer.MSG_CLOSED_SERVERS % BotLocalizer.STATUS_MESSAGES[8],
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
                     color=BotGlobals.EMBED_COLOR.get('offline')
                 )
             
