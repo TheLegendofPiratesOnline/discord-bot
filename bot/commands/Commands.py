@@ -14,6 +14,7 @@ from discord.ext import commands
 
 from bot.language import BotLocalizer
 from bot.core import BotGlobals, BotCore
+from bot.commands import Buttons
 
 from datetime import datetime
 
@@ -548,3 +549,29 @@ class Commands:
                     )
 
             await ctx.send(embed=embed)
+
+        @self.bot.command()
+        async def news(ctx):
+            """
+            Returns the latest news from TLOPO.
+            """
+
+            news = self.taskMgr.getNewsFeed()
+            system_status = self.taskMgr.getSystemStatus()
+            
+            if system_status.get('status', 0) == 3:
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
+                    color=BotGlobals.EMBED_COLOR.get('offline')
+                )
+                await ctx.send(embed=embed)
+            
+            else:
+                view = Buttons.NewsButtons(news)
+
+                embed = view.create_news_embed()
+
+                await ctx.send(embed=embed, view=view)
+
+                

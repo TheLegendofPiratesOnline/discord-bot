@@ -26,6 +26,7 @@ class BotTasks:
         self.activeInvasions = {}
         self.oceanPopulations = {}
         self.systemStatus = {}
+        self.newsFeed = []
 
     def initializeTasks(self, tasks):
         print(":BotTasks: Initializing tasks...")
@@ -52,8 +53,25 @@ class BotTasks:
         # TODO.
 
     def task_news_feed(self, name, task):
+        #! news item amount fetching not working, currently returns the default 5 most recent items
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
-        # TODO.
+        resp = self.contactAPI(task.get('api_url'))
+
+        news=[]
+        for i in resp:
+            news_item = {
+                'url': i.get('url'),
+                'picurl': i.get('picurl'),
+                'title': i.get('title'),
+                'author': i.get('author'),
+                'date': i.get('date'),
+                'summery': i.get('summary')
+            }
+
+            news.append(news_item)
+
+        self.setNewsFeed(news)
+
 
     def task_system_status(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
@@ -183,3 +201,17 @@ class BotTasks:
         """
 
         return self.oceanPopulations
+    
+    def setNewsFeed(self, news):
+        """
+        Set news feed.
+        """
+
+        self.newsFeed = news
+
+    def getNewsFeed(self):
+        """
+        Get news feed.
+        """
+
+        return self.newsFeed

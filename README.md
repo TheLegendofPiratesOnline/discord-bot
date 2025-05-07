@@ -58,5 +58,10 @@ The following outlines how to start the bot:
 Startup will take longer than usual as the bot generates the new translation. Do not panic if it looks like nothing is happening—this process can take time depending on the language.  
 This delay occurs only during the first run.
 
+## Additional Information
+This project is still in active development.
+
+See to see all planned updates read [WIP.md](WIP.md)
+
 ## License
 This bot is currently available under the Modified BSD license (BSD 3-Clause). The terms of this license are available in the [LICENSE](LICENSE) file of this archive.

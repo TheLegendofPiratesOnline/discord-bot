@@ -87,5 +87,6 @@ class BotCore(Commands.Commands):
             if len(self.bot.guilds) == 0:
                 print(":BotCore: To connect this bot to a server, please use the following url:\n")
                 print('    https://discordapp.com/oauth2/authorize?client_id=%s&scope=bot&permissions=8' % self.bot.user.id)
+                #! UPDATE BOT SCOPE SO IT DOESNT NEED SERVER ADMIN ACCESS
 
             print(':BotCore: %s' % BotLocalizer.APP_DESCRIPTION)

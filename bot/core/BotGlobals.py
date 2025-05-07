@@ -22,6 +22,7 @@ AUTHORS_FILENAME = 'authors.md'
 API_URLS = {
     'news_feed':'https://api.tlopo.com/news/feed/',
     'news_notification':'https://api.tlopo.com/news/notification',
+    #'release_feed':'https://api.tlopo.com/release/feed/',
     'shards':'https://api.tlopo.com/shards',
     'system_status':'https://api.tlopo.com/system/status'
 }
@@ -44,7 +45,11 @@ BOT_TASKS = {
     'task_news_notification': {
         'time': 25.0,
         'api_url': API_URLS.get('news_notification')
-    }
+    },
+    #'task_release_feed': {
+    #    'time': 25.0,
+    #    'api_url': API_URLS.get('release_feed')
+    #}
 }
 
 BASE_CHANNEL_TO_NAME = {
@@ -99,17 +104,18 @@ GLOB_CODE_TO_EMOJI = {
 }
 
 EMBED_COLOR = {
-    'help': 0x3498db,      # Blue
-    'about': 0x9b59b6,     # Purple
-    'status': 0x2ecc71,    # Green
+    'help': 0x3498db,       # Blue
+    'about': 0x9b59b6,      # Purple
+    'status': 0x2ecc71,     # Green
     'fullstatus': 0x27ae60, # Dark Green
-    'oceans': 0x1abc9c,    # Turquoise
-    'fleets': 0xe67e22,    # Orange
-    'invasions': 0xe74c3c, # Red
-    'notices': 0xf1c40f,   # Yellow
-    'error': 0xff0000,     # Bright Red
-    'warning': 0xf39c12,   # Amber
-    'offline': 0x95a5a6    # Gray
+    'oceans': 0x1abc9c,     # Turquoise
+    'fleets': 0xe67e22,     # Orange
+    'invasions': 0xe74c3c,  # Red
+    'notices': 0xf1c40f,    # Yellow
+    'error': 0xff0000,      # Bright Red
+    'warning': 0xf39c12,    # Amber
+    'offline': 0x95a5a6,    # Gray
+    'news': 0x1f8b4c        # A darker green xD
 }
 
 FORMAT_STRINGS = {

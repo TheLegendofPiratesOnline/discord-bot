@@ -10,3 +10,6 @@ local_settings.json
 
 # Auto Generated Translations
 BotLocalizer_*_AT.py
+
+# Test files
+APITests.py
