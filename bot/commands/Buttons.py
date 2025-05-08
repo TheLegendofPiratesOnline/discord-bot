@@ -37,17 +37,17 @@ class NewsButtons(discord.ui.View):
             )
             discord.Embed.set_image(embed, url=self.news[self.article_number].get('picurl'))
             
-            footer_info = "Artical %s/%s | %s" % (self.article_number + 1, len(self.news), self.news[self.article_number].get('date'))
+            footer_info = "%s\n[%s/%s]" % (self.news[self.article_number].get('date'), self.article_number + 1, len(self.news))
 
             if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
                 discord.Embed.set_footer(
                     embed,
-                    text= "%s\n%s" % (self.news[self.article_number].get('date'), BotLocalizer.AUTO_TRANSLATE_WARNING)
+                    text= "%s\n%s" % (footer_info, BotLocalizer.AUTO_TRANSLATE_WARNING)
                 )
             else:
                 discord.Embed.set_footer(
                     embed,
-                    text= self.news[self.article_number].get('date')
+                    text= footer_info
                 )
 
             return embed
