@@ -7,5 +7,6 @@
     "suppessWarnings":true,
     "link": "unset",
     "showLink": false,
-    "autoTranslate": false
+    "autoTranslate": false,
+    "maxNewsAricles": 5
 }

@@ -553,7 +553,7 @@ class Commands:
         @self.bot.command()
         async def news(ctx):
             """
-            Returns the latest 5 news articles.
+            Returns latest news articles.
             """
 
             news = self.taskMgr.getNewsFeed()

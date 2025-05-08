@@ -7,7 +7,7 @@ Public Discord bot that utilizes [TLOPO's APIs](https://thelegendofpiratesonline
 | `!fullstatus` | Returns current server status with more details. |
 | `!invasions` | Returns active invasions. |
 | `!help` | Returns a list of commands. |
-| `!news` | Returns the latest 5 news articles. |
+| `!news` | Returns latest news articles. |
 | `!about` | Returns information about the bot. |
 | `!status` | Returns current server status. |
 | `!fleets` | Returns active fleets. |

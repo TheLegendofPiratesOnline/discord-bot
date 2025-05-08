@@ -20,7 +20,7 @@ AUTHORS_FILENAME = 'authors.md'
 
 # API Docs: https://tlopo.com/docs/
 API_URLS = {
-    'news_feed':'https://api.tlopo.com/news/feed/',
+    'news_feed':'https://api.tlopo.com/news/feed/?limit=%s&offset=%s',
     'news_notification':'https://api.tlopo.com/news/notification',
     #'release_feed':'https://api.tlopo.com/release/feed/',
     'shards':'https://api.tlopo.com/shards',

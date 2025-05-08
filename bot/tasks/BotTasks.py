@@ -21,12 +21,14 @@ class BotTasks:
     keeping tabs on all looping tasks.
     """
 
-    def __init__(self):
+    def __init__(self, maxNewsAricles: int=5, debug: bool=False):
         self.activeFleets = {}
         self.activeInvasions = {}
         self.oceanPopulations = {}
         self.systemStatus = {}
         self.newsFeed = []
+        self.maxNewsAricles = maxNewsAricles
+        self.debug = debug
 
     def initializeTasks(self, tasks):
         print(":BotTasks: Initializing tasks...")
@@ -53,24 +55,45 @@ class BotTasks:
         # TODO.
 
     def task_news_feed(self, name, task):
-        #! news item amount fetching not working, currently returns the default 5 most recent items
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
-        resp = self.contactAPI(task.get('api_url'))
+        if self.maxNewsAricles > 10:   
+            news=[]
 
-        news=[]
-        for i in resp:
-            news_item = {
-                'url': i.get('url'),
-                'picurl': i.get('picurl'),
-                'title': i.get('title'),
-                'author': i.get('author'),
-                'date': i.get('date'),
-                'summery': i.get('summary')
-            }
+            for i in range(0, self.maxNewsAricles, 10):
+                resp = self.contactAPI(task.get('api_url') % (10, i))
 
-            news.append(news_item)
+                for i in resp:
+                    news_item = {
+                        'url': i.get('url'),
+                        'picurl': i.get('picurl'),
+                        'title': i.get('title'),
+                        'author': i.get('author'),
+                        'date': i.get('date'),
+                        'summery': i.get('summary')
+                    }
+
+                    news.append(news_item)
+
+        else:
+            resp = self.contactAPI(task.get('api_url') % (self.maxNewsAricles, 0))
+
+            news=[]
+            for i in resp:
+                news_item = {
+                    'url': i.get('url'),
+                    'picurl': i.get('picurl'),
+                    'title': i.get('title'),
+                    'author': i.get('author'),
+                    'date': i.get('date'),
+                    'summery': i.get('summary')
+                }
+
+                news.append(news_item)
 
         self.setNewsFeed(news)
+
+        if self.debug:
+            print(json.dumps(news, indent=4) +"\n\nNum articals: " + str(len(news)))   
 
 
     def task_system_status(self, name, task):
@@ -92,6 +115,9 @@ class BotTasks:
             out['outages'] = outages or None
             out['servers'] = resp.get('servers')
             self.setSystemStatus(out)
+
+            if self.debug:
+                print(json.dumps(out, indent=4) +"\n\nNum outages: " + str(len(outages)))
 
     def task_shards(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
@@ -128,6 +154,11 @@ class BotTasks:
             self.setActiveFleets(fleets)
             self.setActiveInvasions(invasions)
             self.setOceanPopulations(populations)
+
+            if self.debug:
+                print(json.dumps(fleets, indent=4) +"\n\nNum fleets: " + str(len(fleets)))
+                print(json.dumps(invasions, indent=4) +"\n\nNum invasions: " + str(len(invasions)))
+                print(json.dumps(populations, indent=4) +"\n\nNum populations: " + str(len(populations)))
 
     ## Other task functions.
     def contactAPI(self, apiUrl):
