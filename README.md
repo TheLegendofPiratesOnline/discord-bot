@@ -41,11 +41,6 @@ The following outlines how to configure `settings.json`:
 4. If you want others to be able to add the bot to their Discord servers, set the installation link in the `link` field, and set `showLink` to `True`.  
    The link will be shown in the bot's `!about` command.
 
-### For Developers
-We recommend setting `debug` to `True` and `suppressWarnings` to `False` to enable debug logs and console warnings.
-
-Documentation for API on [docs.tlopo.com](https://docs.tlopo.com/) is outdated, refer to [index.html.md](https://github.com/TheLegendofPiratesOnline/documentation/blob/master/source/index.html.md) in the API documentation repository source folder for the still outdated but more up to date documentation.
-
 ## Starting the Bot
 The following outlines how to start the bot:
 
@@ -65,6 +60,11 @@ This delay occurs only during the first run.
 This project is still in active development.
 
 See to see all planned updates read [WIP.md](WIP.md)
+
+### For Developers
+We recommend setting `debug` to `True` and `suppressWarnings` to `False` to enable debug logs and console warnings.
+
+Documentation for API on [docs.tlopo.com](https://docs.tlopo.com/) is outdated, refer to [index.html.md](https://github.com/TheLegendofPiratesOnline/documentation/blob/master/source/index.html.md) in the API documentation repository source folder for the still outdated but more up to date documentation.
 
 ## License
 This bot is currently available under the Modified BSD license (BSD 3-Clause). The terms of this license are available in the [LICENSE](LICENSE) file of this archive.
