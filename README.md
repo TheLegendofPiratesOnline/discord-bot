@@ -44,6 +44,8 @@ The following outlines how to configure `settings.json`:
 ### For Developers
 We recommend setting `debug` to `True` and `suppressWarnings` to `False` to enable debug logs and console warnings.
 
+Documentation for API on [docs.tlopo.com](https://docs.tlopo.com/) is outdated, refer to [index.html.md](https://github.com/TheLegendofPiratesOnline/documentation/blob/master/source/index.html.md) in the API documentation repository source folder for the still outdated but more up to date documentation.
+
 ## Starting the Bot
 The following outlines how to start the bot:
 
