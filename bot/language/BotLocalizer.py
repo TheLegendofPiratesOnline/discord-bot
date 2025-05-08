@@ -29,17 +29,18 @@ class BotLocalizer:
     source language (english) into the target language.
     """
 
-    def __init__(self, debug: bool = False, auto_translate: bool = False):
+    def __init__(self, debug: bool = False, auto_translate: bool = False, module: str = 'en-us'):
         self.debug = debug
         self.autoTranslate = auto_translate
+        self.module = module
 
-    def importLanguageModule(self, module: str = 'en-us'):
+    def importLanguageModule(self):
         """
         Imports other language modules and places them
         into the globals.
         """
 
-        translate = BotTranslate.BotTranslate(self.debug)
+        translate = BotTranslate.BotTranslate(self.debug, self.module)
 
         global AUTOTRANSLATE_IN_USE
         AUTOTRANSLATE_IN_USE = False
@@ -52,29 +53,29 @@ class BotLocalizer:
                     'pt-pt': 'BotLocalizerPortuguese',
                 }
 
-                module_name = 'bot.language.%s' % language_modules.get(module)
+                module_name = 'bot.language.%s' % language_modules.get(self.module)
                 x = __import__(module_name, {}, {}, ['bot.language'])
             
             #check if a translation has already been generated
             except ImportError:
-                print(":BotLocalizer: Failed to load %s language, checking for existing translation"  % module)
+                print(":BotLocalizer: Failed to load %s language, checking for existing translation"  % self.module)
                 try:
-                    module_name = 'bot.language.BotLocalizer_%s_AT' % module.upper()
+                    module_name = 'bot.language.BotLocalizer_%s_AT' % self.module.upper()
                     x = __import__(module_name, {}, {}, ['bot.language'])
                     AUTOTRANSLATE_IN_USE = True
 
                 #generate a new translation life if one does not exist
                 except ImportError:
-                    print(":BotLocalizer: Failed to load %s language, generating new translation file" % module)
-                    translate.translate_localizer(module)
+                    print(":BotLocalizer: Failed to load %s language, generating new translation file" % self.module)
+                    translate.translate_localizer(self.module)
                     try:
-                        module_name = 'bot.language.BotLocalizer_%s_AT' % module.upper()
+                        module_name = 'bot.language.BotLocalizer_%s_AT' % self.module.upper()
                         x = __import__(module_name, {}, {}, ['bot.language'])
                         AUTOTRANSLATE_IN_USE = True
 
                     #if the translation fails, fall back to English
                     except ImportError:
-                        print(":BotLocalizer: Failed to load %s language, falling back to English" % module)
+                        print(":BotLocalizer: Failed to load %s language, falling back to English" % self.module)
                         x = __import__('bot.language.BotLocalizerEnglish', {}, {}, ['bot.language'])
             globals().update(x.__dict__)
 
@@ -85,15 +86,15 @@ class BotLocalizer:
                     'pt-pt': 'BotLocalizerPortuguese',
                 }
 
-                module_name = 'bot.language.%s' % language_modules.get(module, 'BotLocalizerEnglish')
+                module_name = 'bot.language.%s' % language_modules.get(self.module, 'BotLocalizerEnglish')
                 x = __import__(module_name, {}, {}, ['bot.language'])
             except ImportError:
-                print(":BotLocalizer: Failed to load %s language, falling back to English" % module)
+                print(":BotLocalizer: Failed to load %s language, falling back to English" % self.module)
                 x = __import__('bot.language.BotLocalizerEnglish', {}, {}, ['bot.language'])
             globals().update(x.__dict__)
 
 
 # Default to English initially
-default_localizer = BotLocalizer(False, False)
-default_localizer.importLanguageModule('en-us')
+default_localizer = BotLocalizer(False, False, 'en-us')
+default_localizer.importLanguageModule()
 # The language will be properly set when BotCore initializes
