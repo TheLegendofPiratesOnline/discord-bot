@@ -50,9 +50,12 @@ class BotCore(Commands.Commands):
         language = self.settings.getSetting('language')
         if not language:
             language = 'en-us'
+
+        
+        localizer = BotLocalizer.BotLocalizer(self.settings.getSetting('debug'), self.settings.getSetting('autoTranslate'))
         
         # Import language module
-        BotLocalizer.importLanguageModule(language, self.settings.getSetting('autoTranslate'), self.settings.getSetting('debug'))
+        localizer.importLanguageModule(language)
 
         # Create the bot using Discord's API.
         intents = discord.Intents.default()
