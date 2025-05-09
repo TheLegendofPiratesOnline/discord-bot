@@ -67,7 +67,7 @@ class BotLocalizer:
                 #generate a new translation life if one does not exist
                 except ImportError:
                     print(":BotLocalizer: Failed to load %s language, generating new translation file" % self.module)
-                    translate.translate_localizer(self.module)
+                    translate.translate_localizer()
                     try:
                         module_name = 'bot.language.BotLocalizer_%s_AT' % self.module.upper()
                         x = __import__(module_name, {}, {}, ['bot.language'])

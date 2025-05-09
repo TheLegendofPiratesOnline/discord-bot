@@ -39,7 +39,7 @@ BOT_TASKS = {
         'api_url': API_URLS.get('system_status')
     },
     'task_news_feed': {
-        'time': 25.0,
+        'time': 900.0,                                  # 15 minutes
         'api_url': API_URLS.get('news_feed')
     },
     'task_news_notification': {
@@ -186,3 +186,24 @@ PROTECTED_WORDS = [
     'prod-gs-1.tlopo.com',              #58
     'AUTO_TRANSLATE_WARNING'            #59
 ]
+
+# Anything that is commented out will not output its debug information.
+DEBUG_MODULES = {
+    'task_news_notification',
+    'task_news_feed',
+    'task_system_status',
+    'task_shards',
+    'task_shards_fleets',
+    'task_shards_invasions',
+    'task_shards_populations',
+    'translate_news_feed',
+    'translate_localizer_add_items',
+    'translate_localizer_translate_items',
+    'clean_translation_errors',
+    'translate_localizer_stage_1',
+    'translate_localizer_stage_2',
+    'protect_words',
+    'restore_protected_words',
+    'restore_protected_words_replacements'
+    'translate_string'
+}

@@ -64,6 +64,8 @@ See to see all planned updates read [WIP.md](WIP.md)
 ### For Developers
 We recommend setting `debug` to `True` and `suppressWarnings` to `False` to enable debug logs and console warnings.
 
+When debugging specific modules, see [BotGlobals.py](BotGlobals.py) for the DEBUG_MODULES list and comment out any module that you do not want a debug output for.
+
 Documentation for API on [docs.tlopo.com](https://docs.tlopo.com/) is outdated, refer to [index.html.md](https://github.com/TheLegendofPiratesOnline/documentation/blob/master/source/index.html.md) in the API documentation repository source folder for the still outdated but more up to date documentation.
 
 ## License

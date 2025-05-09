@@ -22,11 +22,25 @@ class BotTranslate:
             str: The translated text.
         """
 
-        self.protect_words(text)
-        translated_text = GoogleTranslator(source='en', target=self.target_language).translate(text)
+        protected_line = self.protect_words(text)
+        if self.debug and 'translate_string' in BotGlobals.DEBUG_MODULES:
+            print('[DEBUG] Protecting line: %s' % protected_line)
+
+        translated_text = GoogleTranslator(source='en', target=self.target_language).translate(protected_line)
+        if self.debug and 'translate_string' in BotGlobals.DEBUG_MODULES:
+            print('[DEBUG] Translated line: %s' % translated_text)
+
         cleaned_translation = self.clean_translation_errors(text=translated_text, stage=1)
+        if self.debug and 'translate_string' in BotGlobals.DEBUG_MODULES:
+            print('[DEBUG] Cleaned translation: %s' % cleaned_translation)
+
         restored_translation = self.restore_protected_words(text=cleaned_translation)
+        if self.debug and 'translate_string' in BotGlobals.DEBUG_MODULES:
+            print('[DEBUG] Restored translation: %s' % restored_translation)
+
         cleaned_translation= self.clean_translation_errors(text=restored_translation, stage=2)
+        if self.debug and 'translate_string' in BotGlobals.DEBUG_MODULES:
+            print('[DEBUG] Final cleaned translation: %s' % cleaned_translation)
         return cleaned_translation
 
     def translate_localizer(self):
@@ -65,7 +79,7 @@ class BotTranslate:
                 else:
                     DATA_TO_BE_TRANSLATED.append(line)
 
-                if self.debug == True:
+                if self.debug and 'translate_localizer_add_items' in BotGlobals.DEBUG_MODULES:
                     print('[DEBUG] Adding line %s: %s to DATA_TO_BE_TRANSLATED' % (i, line))
 
         template_file.close()
@@ -80,7 +94,7 @@ class BotTranslate:
                     translated_line = GoogleTranslator(source='en', target=self.target_language).translate(line)
                     translated_file.write(translated_line + '\n')
 
-                if self.debug == True:
+                if self.debug and 'translate_localizer_translate_items' in BotGlobals.DEBUG_MODULES:
                     print('[DEBUG] Adding line %s: %s to file' % (i, translated_line))
 
         translated_file.close()
@@ -120,7 +134,7 @@ class BotTranslate:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     file_content = f.read()
-                    if self.debug:
+                    if self.debug and 'clean_translation_errors' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG] Reading file: %s' % file_path)
 
                 # Stage 1: Basic placeholder fixes
@@ -128,7 +142,7 @@ class BotTranslate:
                     for pattern, replacement in STAGE_ONE_REGEX.items():
                         file_content = re.sub(pattern, replacement, file_content, flags=re.MULTILINE)
 
-                        if self.debug:
+                        if self.debug and 'clean_translation_errors_stage_1' in BotGlobals.DEBUG_MODULES:
                             print('[DEBUG][STAGE 1] Replacing pattern: %s with %s' % (pattern, replacement))
 
                 # Stage 2: More complex syntax fixes (run after protected words are restored)
@@ -136,7 +150,7 @@ class BotTranslate:
                     for pattern, replacement in STAGE_TWO_REGEX.items():
                         file_content = re.sub(pattern, replacement, file_content, flags=re.MULTILINE)
 
-                        if self.debug:
+                        if self.debug and 'clean_translation_errors_stage_2' in BotGlobals.DEBUG_MODULES:
                             print('[DEBUG][STAGE 2] Replacing pattern: %s with %s' % (pattern, replacement))
                 else:
                     print('[ERROR] Invalid stage number: %s' % stage)
@@ -145,7 +159,7 @@ class BotTranslate:
                 # Write cleaned content
                 with open(file_path, 'w', encoding='utf-8') as f:
                     f.write(file_content)
-                    if self.debug:
+                    if self.debug and 'clean_translation_errors' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG] Writing cleaned content to file: %s' % file_path)
 
                 f.close()
@@ -159,7 +173,7 @@ class BotTranslate:
                 for pattern, replacement in STAGE_ONE_REGEX.items():
                     text = re.sub(pattern, replacement, text, flags=re.MULTILINE)
 
-                    if self.debug:
+                    if self.debug and 'clean_translation_errors_stage_1' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG][STAGE 1] Replacing pattern: %s with %s' % (pattern, replacement))
 
                 return text
@@ -169,7 +183,7 @@ class BotTranslate:
                 for pattern, replacement in STAGE_TWO_REGEX.items():
                     text = re.sub(pattern, replacement, text, flags=re.MULTILINE)
 
-                    if self.debug:
+                    if self.debug and 'clean_translation_errors_stage_2' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG][STAGE 2] Replacing pattern: %s with %s' % (pattern, replacement))
 
                 return text
@@ -198,7 +212,7 @@ class BotTranslate:
             if word in line:
                 line = line.replace(word, '__%s__' % i)
 
-                if self.debug:
+                if self.debug and 'protect_words' in BotGlobals.DEBUG_MODULES:
                     print('[DEBUG] Protecting word: %s with placeholder: __%s__' % (word, i))
         return line
 
@@ -214,7 +228,7 @@ class BotTranslate:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     file_content = f.read()
-                    if self.debug:
+                    if self.debug and 'restore_protected_words' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG] Reading file: %s' % file_path)
                 
                 restored_file_content = file_content
@@ -228,12 +242,12 @@ class BotTranslate:
                         if pattern in restored_file_content:
                             restored_file_content = restored_file_content.replace(pattern, word)
 
-                            if self.debug:
+                            if self.debug and 'restore_protected_words_replacements' in BotGlobals.DEBUG_MODULES:
                                 print('[DEBUG] Replacing pattern: %s with %s' % (pattern, word))
 
                 with open(file_path, 'w', encoding='utf-8') as f:
                     f.write(restored_file_content)
-                    if self.debug:
+                    if self.debug and 'restore_protected_words' in BotGlobals.DEBUG_MODULES:
                         print('[DEBUG] Writing restored content to file: %s' % file_path)
                 
                 f.close()
@@ -252,7 +266,7 @@ class BotTranslate:
                     if pattern in text:
                         text = text.replace(pattern, word)
 
-                        if self.debug:
+                        if self.debug and 'restore_protected_words_replacements' in BotGlobals.DEBUG_MODULES:
                             print('[DEBUG] Replacing pattern: %s with %s' % (pattern, word))
 
             return text

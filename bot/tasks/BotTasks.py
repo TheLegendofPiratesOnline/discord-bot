@@ -10,7 +10,7 @@
 # with this source code in a file named "LICENSE."
 
 from bot.core import BotGlobals
-from bot.language import BotLocalizer
+from bot.language import BotLocalizer, BotTranslate
 import threading
 import requests
 import json
@@ -21,7 +21,7 @@ class BotTasks:
     keeping tabs on all looping tasks.
     """
 
-    def __init__(self, maxNewsAricles: int=5, debug: bool=False):
+    def __init__(self, maxNewsAricles: int=5, debug: bool=False, language: str='en'):
         self.activeFleets = {}
         self.activeInvasions = {}
         self.oceanPopulations = {}
@@ -29,6 +29,7 @@ class BotTasks:
         self.newsFeed = []
         self.maxNewsAricles = maxNewsAricles
         self.debug = debug
+        self.language = language
 
     def initializeTasks(self, tasks):
         print(":BotTasks: Initializing tasks...")
@@ -69,7 +70,7 @@ class BotTasks:
                         'title': i.get('title'),
                         'author': i.get('author'),
                         'date': i.get('date'),
-                        'summery': i.get('summary')
+                        'summary': i.get('summary')
                     }
 
                     news.append(news_item)
@@ -80,19 +81,20 @@ class BotTasks:
             news=[]
             for i in resp:
                 news_item = {
+                    'id': i.get('id'),
                     'url': i.get('url'),
                     'picurl': i.get('picurl'),
                     'title': i.get('title'),
                     'author': i.get('author'),
                     'date': i.get('date'),
-                    'summery': i.get('summary')
+                    'summary': i.get('summary')
                 }
 
                 news.append(news_item)
 
         self.setNewsFeed(news)
 
-        if self.debug:
+        if self.debug and 'task_news_feed' in BotGlobals.DEBUG_MODULES:
             print(json.dumps(news, indent=4) +"\n\nNum articals: " + str(len(news)))   
 
 
@@ -116,7 +118,7 @@ class BotTasks:
             out['servers'] = resp.get('servers')
             self.setSystemStatus(out)
 
-            if self.debug:
+            if self.debug and 'task_system_status' in BotGlobals.DEBUG_MODULES:
                 print(json.dumps(out, indent=4) +"\n\nNum outages: " + str(len(outages)))
 
     def task_shards(self, name, task):
@@ -155,10 +157,14 @@ class BotTasks:
             self.setActiveInvasions(invasions)
             self.setOceanPopulations(populations)
 
-            if self.debug:
-                print(json.dumps(fleets, indent=4) +"\n\nNum fleets: " + str(len(fleets)))
-                print(json.dumps(invasions, indent=4) +"\n\nNum invasions: " + str(len(invasions)))
-                print(json.dumps(populations, indent=4) +"\n\nNum populations: " + str(len(populations)))
+            if self.debug and 'task_shards' in BotGlobals.DEBUG_MODULES:
+                if 'task_shards_fleets' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][task_shards][fleets]')
+                    print(json.dumps(fleets, indent=4) +"\n\nNum fleets: " + str(len(fleets)))
+                if 'task_shards_invasions' in BotGlobals.DEBUG_MODULES:
+                    print(json.dumps(invasions, indent=4) +"\n\nNum invasions: " + str(len(invasions)))
+                if 'task_shards_populations' in BotGlobals.DEBUG_MODULES:
+                    print(json.dumps(populations, indent=4) +"\n\nNum populations: " + str(len(populations)))
 
     ## Other task functions.
     def contactAPI(self, apiUrl):
@@ -176,6 +182,43 @@ class BotTasks:
             r = None
 
         return r
+    
+    def translate_news_feed(self, news: list) -> list:
+        """
+        Translate the news feed using the BotTranslate class.
+
+        Args:
+            news (list): The news feed to translate.
+
+        Returns:
+            list: The translated news feed.
+        """
+
+
+        translate=BotTranslate.BotTranslate(self.debug, self.language)
+  
+        translated_news=[]
+
+        print(json.dumps(news, indent=4) +"\n\nNum articals: " + str(len(news)))
+
+        for i in news:
+
+            translated_news_item = {
+                'id': i.get('id'),
+                'url': i.get('url'),
+                'picurl': i.get('picurl'),
+                'title': translate.translate_string(i.get('title')),
+                'author': i.get('author'),
+                'date': i.get('date'),
+                'summary': translate.translate_string(i.get('summary'))
+            }
+
+            translated_news.append(translated_news_item)
+
+            if self.debug and 'translate_news_feed' in BotGlobals.DEBUG_MODULES:
+                print('[DEBUG][translated_news_feed] Added translated news item: %s' % translated_news_item)
+
+        return translated_news
 
     def setActiveFleets(self, fleets):
         """
@@ -238,7 +281,10 @@ class BotTasks:
         Set news feed.
         """
 
-        self.newsFeed = news
+        if BotLocalizer.AUTOTRANSLATE_IN_USE:
+            self.newsFeed = self.translate_news_feed(news)
+        else:
+            self.newsFeed = news
 
     def getNewsFeed(self):
         """
