@@ -8,5 +8,6 @@
     "link": "unset",
     "showLink": false,
     "autoTranslate": false,
-    "maxNewsAricles": 5
+    "maxNewsAricles": 5,
+    "maxReleaseNotes": 5
 }

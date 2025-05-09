@@ -8,6 +8,7 @@ Public Discord bot that utilizes [TLOPO's APIs](https://thelegendofpiratesonline
 | `!invasions` | Returns active invasions. |
 | `!help` | Returns a list of commands. |
 | `!news` | Returns latest news articles. |
+| `!releases` | Returns latest releases. |
 | `!about` | Returns information about the bot. |
 | `!status` | Returns current server status. |
 | `!fleets` | Returns active fleets. |
@@ -26,7 +27,7 @@ The following procedure explains how to install the TLOPO Discord Bot:
 2. Change your current working directory to the TLOPO Discord Bot source code.
 3. Run the following command to install the dependencies required for the bot to run:
 
-    `python3 -m pip install -r requirements.txt`
+    `python3 setup.py`
 
 ## Setup
 The following outlines how to configure `settings.json`:
@@ -58,6 +59,8 @@ This delay occurs only during the first run.
 
 ## Additional Information
 This project is still in active development.
+
+Due to how the bot currently handles release notes, startup will take a good amount of time (especially with large max release values).
 
 See to see all planned updates read [WIP.md](WIP.md)
 

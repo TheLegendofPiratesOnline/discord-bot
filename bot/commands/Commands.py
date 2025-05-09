@@ -60,7 +60,7 @@ class Commands:
         @self.bot.command()
         async def about(ctx):
             """
-            Returns a information about bot.
+            Returns information about bot.
             """
 
             embed = discord.Embed(
@@ -571,6 +571,30 @@ class Commands:
                 view = Buttons.NewsButtons(news)
 
                 embed = view.create_news_embed()
+
+                await ctx.send(embed=embed, view=view)
+        
+        @self.bot.command()
+        async def releases(ctx):
+            """
+            Returns latest releases.
+            """
+
+            releases = self.taskMgr.getReleaseFeed()
+            system_status = self.taskMgr.getSystemStatus()
+            
+            if system_status.get('status', 0) == 3:
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
+                    color=BotGlobals.EMBED_COLOR.get('offline')
+                )
+                await ctx.send(embed=embed)
+            
+            else:
+                view = Buttons.ReleaseButtons(releases)
+
+                embed = view.create_release_embed()
 
                 await ctx.send(embed=embed, view=view)
 

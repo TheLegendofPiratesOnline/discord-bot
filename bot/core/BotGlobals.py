@@ -22,7 +22,7 @@ AUTHORS_FILENAME = 'authors.md'
 API_URLS = {
     'news_feed':'https://api.tlopo.com/news/feed/?limit=%s&offset=%s',
     'news_notification':'https://api.tlopo.com/news/notification',
-    #'release_feed':'https://api.tlopo.com/release/feed/',
+    'release_feed':'https://api.tlopo.com/releases/feed/?limit=%s&offset=%s',
     'shards':'https://api.tlopo.com/shards',
     'system_status':'https://api.tlopo.com/system/status'
 }
@@ -46,10 +46,10 @@ BOT_TASKS = {
         'time': 25.0,
         'api_url': API_URLS.get('news_notification')
     },
-    #'task_release_feed': {
-    #    'time': 25.0,
-    #    'api_url': API_URLS.get('release_feed')
-    #}
+    'task_release_feed': {
+        'time': 900.0,
+        'api_url': API_URLS.get('release_feed')
+    }
 }
 
 BASE_CHANNEL_TO_NAME = {
@@ -121,7 +121,9 @@ EMBED_COLOR = {
 FORMAT_STRINGS = {
     'bold': '**%s**',
     'server_status': '**%s**:  %s\n',
-    'notice_format': '\n**%s** | %s\n**%s:** *%s*\n'
+    'notice_format': '\n**%s** | %s\n**%s:** *%s*\n',
+    'release_text': '- %s\n',
+    'release_sub_text': '  - %s\n',
 }
 
 PROTECTED_WORDS = [
@@ -189,21 +191,24 @@ PROTECTED_WORDS = [
 
 # Anything that is commented out will not output its debug information.
 DEBUG_MODULES = {
-    'task_news_notification',
-    'task_news_feed',
-    'task_system_status',
-    'task_shards',
-    'task_shards_fleets',
-    'task_shards_invasions',
-    'task_shards_populations',
-    'translate_news_feed',
-    'translate_localizer_add_items',
-    'translate_localizer_translate_items',
-    'clean_translation_errors',
-    'translate_localizer_stage_1',
-    'translate_localizer_stage_2',
-    'protect_words',
-    'restore_protected_words',
-    'restore_protected_words_replacements'
-    'translate_string'
+    #'task_news_notification',
+    #'task_news_feed',
+    #'task_system_status',
+    #'task_shards',
+    #'task_shards_fleets',
+    #'task_shards_invasions',
+    #'task_shards_populations',
+    #'translate_news_feed',
+    #'translate_localizer_add_items',
+    #'translate_localizer_translate_items',
+    #'clean_translation_errors',
+    #'translate_localizer_stage_1',
+    #'translate_localizer_stage_2',
+    #'protect_words',
+    #'restore_protected_words',
+    #'restore_protected_words_replacements'
+    #'translate_string',
+    'get_release_notes',
+    'get_release_notes_items',
+    'task_release_feed'
 }

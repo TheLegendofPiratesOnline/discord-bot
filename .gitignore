@@ -13,3 +13,6 @@ BotLocalizer_*_AT.py
 
 # Test files
 APITests.py
+
+# VSCode stuff
+.vscode/

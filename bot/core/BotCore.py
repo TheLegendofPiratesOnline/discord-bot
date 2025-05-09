@@ -66,7 +66,7 @@ class BotCore(Commands.Commands):
         self.bot.remove_command('help')
 
         # Initialize taskMgr.
-        self.taskMgr = BotTasks.BotTasks(self.settings.getSetting('maxNewsAricles'), self.settings.getSetting('debug'), self.settings.getSetting('language'))
+        self.taskMgr = BotTasks.BotTasks(self.settings.getSetting('maxNewsAricles'), self.settings.getSetting('debug'), self.settings.getSetting('language'), self.settings.getSetting('maxReleaseNotes'))
         self.taskMgr.initializeTasks(BotGlobals.BOT_TASKS)
 
         # Initialize the Commands class.
