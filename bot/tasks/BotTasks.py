@@ -29,6 +29,7 @@ class BotTasks:
         self.oceanPopulations = {}
         self.systemStatus = {}
         self.newsFeed = []
+        self.newsNotifications = {}
         self.releaseFeed = {}
         self.maxNewsAricles = maxNewsAricles
         self.debug = debug
@@ -57,13 +58,21 @@ class BotTasks:
 
     def task_news_notification(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
-        # TODO.
+        resp = self.contactAPI(task.get('api_url'))
+        newsNotifications = {}
+        if resp:
+            newsNotifications = {
+                'message': resp.get('message'),
+                'datetime': resp.get('datetime'),
+            }
+        
+        self.setNewsNotifications(newsNotifications)
+
 
     def task_release_feed(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
+        releaseNotes = []
         if self.maxReleaseNotes > 10:   
-            releaseNotes=[]
-
             for i in range(0, self.maxReleaseNotes, 10):
                 resp = self.contactAPI(task.get('api_url') % (10, i))
                 if resp is None:
@@ -451,4 +460,18 @@ class BotTasks:
         """
 
         return self.releaseFeed
+    
+    def setNewsNotifications(self, newsNotifications: dict|None) -> dict|None:
+        """
+        Set news notifications.
+        """
+
+        self.newsNotifications = newsNotifications
+    
+    def getNewsNotifications(self):
+        """
+        Get news notifications.
+        """
+
+        return self.newsNotifications
 

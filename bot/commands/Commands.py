@@ -597,5 +597,37 @@ class Commands:
                 embed = view.create_release_embed()
 
                 await ctx.send(embed=embed, view=view)
+    
+        @self.bot.command()
+        async def notification(ctx):
+            """
+            Returns the current news banner on the TLOPO website.
+            """
+
+            system_status = self.taskMgr.getSystemStatus()
+            notification = self.taskMgr.getNewsNotifications()
+
+            if system_status.get('status', 0) == 3:
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[11],
+                    description=BotLocalizer.STATUS_MESSAGES[8],
+                    color=BotGlobals.EMBED_COLOR.get('offline')
+                )
+            elif notification:
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % notification.get('title'),
+                    description=notification.get('datetime'),
+                    url=BotGlobals.TLOPO_URL,
+                    color=BotGlobals.EMBED_COLOR.get('notices')
+                )
+            else:
+                embed = discord.Embed(
+                    title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[12],
+                    url=BotGlobals.TLOPO_URL,
+                    color=BotGlobals.EMBED_COLOR.get('status')
+                )
+
+            await ctx.send(embed=embed)
+
 
                 

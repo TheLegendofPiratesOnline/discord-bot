@@ -51,7 +51,8 @@ EMBED_TITLES = [
     'Server Status',  # 8
     'Server Status Unavailable',  # 9
     'Server Notices Unavailable',  # 10
-    'The Legend of Pirates Online is currently closed for an update'  # 11
+    'The Legend of Pirates Online is currently closed for an update',  # 11
+    'No Active Notifications'  # 12
 ]
 
 FIELD_NAMES = [

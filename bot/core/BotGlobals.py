@@ -21,13 +21,15 @@ AUTHORS_FILENAME = 'authors.md'
 # API Docs: https://tlopo.com/docs/
 API_URLS = {
     'news_feed':'https://api.tlopo.com/news/feed/?limit=%s&offset=%s',
-    'news_notification':'https://api.tlopo.com/news/notification',
+    'news_notification':'https://api.tlopo.com/news/notification/',
     'release_feed':'https://api.tlopo.com/releases/feed/?limit=%s&offset=%s',
     'shards':'https://api.tlopo.com/shards',
     'system_status':'https://api.tlopo.com/system/status'
 }
 
 SOURCE_URL = "https://github.com/TheLegendofPiratesOnline/discord-bot"
+
+TLOPO_URL = "https://tlopo.com/"
 
 BOT_TASKS = {
     'task_shards': {

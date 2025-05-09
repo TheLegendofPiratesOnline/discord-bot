@@ -4,16 +4,17 @@ Public Discord bot that utilizes [TLOPO's APIs](https://thelegendofpiratesonline
 ## Commands
 | Command | Description |
 |---------|-------------|
-| `!fullstatus` | Returns current server status with more details. |
-| `!invasions` | Returns active invasions. |
-| `!help` | Returns a list of commands. |
+| `!help` | Returns a list of all commands. |
 | `!news` | Returns latest news articles. |
 | `!releases` | Returns latest releases. |
 | `!about` | Returns information about the bot. |
 | `!status` | Returns current server status. |
+| `!fullstatus` | Returns current server status with more details. |
+| `!invasions` | Returns active invasions. |
 | `!fleets` | Returns active fleets. |
-| `!notices` | Returns any server notices. |
 | `!oceans` | Returns server populations. |
+| `!notices` | Returns any server notices. |
+| `!notifications` | Returns the current news banner on the TLOPO website. |
 
 *Default command prefix used to show commands*
 
