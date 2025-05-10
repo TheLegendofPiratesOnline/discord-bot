@@ -6,8 +6,6 @@ from bot.core import BotGlobals, BotCore
 
 from datetime import datetime
 
-# TODO: Add strings to BotLocalizer and BotLocalizerTranslationTemplate
-
 class NewsButtons(discord.ui.View):
     def __init__(self, news: list = None, article_number: int = 0):
         super().__init__()
@@ -163,7 +161,7 @@ class ReleaseButtons(discord.ui.View):
                         
                         embed.add_field(
                             name=field_name,
-                            value=chunk if chunk else "*No items in this section*",
+                            value=chunk if chunk else BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.RELEASE_STRINGS.get('no_items'),
                             inline=False
                         )
             else:
@@ -171,7 +169,7 @@ class ReleaseButtons(discord.ui.View):
                 if len(embed.fields) < 25:
                     embed.add_field(
                         name=BotGlobals.FORMAT_STRINGS.get('bold') % section_name,
-                        value=section_text if section_text else "*No items in this section*",
+                        value=section_text if section_text else BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.RELEASE_STRINGS.get('no_items'),
                         inline=False
                     )
         
@@ -192,7 +190,7 @@ class ReleaseButtons(discord.ui.View):
         
         return embed
     
-    @discord.ui.button(label="Previous", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label=BotLocalizer.RELEASE_STRINGS.get('previous_button'), style=discord.ButtonStyle.secondary)
     async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         """
         Previous release button
@@ -204,7 +202,7 @@ class ReleaseButtons(discord.ui.View):
         else:
             await interaction.response.defer()
     
-    @discord.ui.button(label="Next", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label=BotLocalizer.RELEASE_STRINGS.get('next_button'), style=discord.ButtonStyle.primary)
     async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         """
         Next release button

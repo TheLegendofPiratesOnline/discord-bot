@@ -12,7 +12,7 @@
 import discord
 from discord.ext import commands
 
-from bot.language import BotLocalizer
+from bot.language import BotLocalizer, BotTranslate
 from bot.core import BotGlobals, BotCore
 from bot.commands import Buttons
 
@@ -35,14 +35,28 @@ class Commands:
         @self.bot.command()
         async def help(ctx):
             """
-            Returns a list of commands.
+            Returns a list of all commands.
             """
 
             embed = discord.Embed(title=BotGlobals.FORMAT_STRINGS.get('bold') % BotLocalizer.EMBED_TITLES[0], color=BotGlobals.EMBED_COLOR.get('help'))
             for command in self.bot.commands:
                 name = command.name
                 if command.help:
-                    desc = command.help
+                    if BotLocalizer.AUTOTRANSLATE_IN_USE == True:
+
+                        debug = 'help_translate' in BotGlobals.DEBUG_MODULES
+                        translator = BotTranslate.BotTranslate(debug, BotCore.LANGUAGE)
+
+                        desc = translator.translate_string(command.help)
+
+                        if debug:
+                            print('[DEBUG] Translated help string: %s' % desc)
+
+                        embed.set_footer(
+                            text= BotLocalizer.AUTO_TRANSLATE_WARNING
+                        )
+                    else:
+                        desc = command.help
                 else:
                     desc = BotLocalizer.STATUS_MESSAGES[0]
                 usage = "%s%s" % (ctx.prefix, name)  # Overcomplicating this incase a non string command is added in the future.
@@ -628,6 +642,3 @@ class Commands:
                 )
 
             await ctx.send(embed=embed)
-
-
-                

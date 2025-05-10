@@ -1,3 +1,5 @@
+from bot.core import BotGlobals
+
 """
 A classe BotLocalizerPortuguese é utilizada para fornecer respostas
 em canais Discord onde se fala português.
@@ -5,9 +7,9 @@ em canais Discord onde se fala português.
 Todas as strings nesta classe estarão apenas em português(Portugal).
 """
 
-APP_DESCRIPTION = "Bot Discord criado pela TLOPO. <3 \n https://github.com/TheLegendofPiratesOnline/discord-bot"
+APP_DESCRIPTION = "Bot Discord criado pela TLOPO. <3 \n %s" % BotGlobals.SOURCE_URL
 
-OUT_OF_DATE = "Este bot está desatualizado. Por favor, visita https://github.com/TheLegendofPiratesOnline/discord-bot para atualizá-lo."
+OUT_OF_DATE = "Este bot está desatualizado. Por favor, visita %s para atualizá-lo." % BotGlobals.SOURCE_URL
 
 FLEET_ITEM_INFO = '''- Tipo: %s
 - Estado: %s
@@ -63,12 +65,18 @@ STATUS_MESSAGES = [
     'O estado de prod-gs-1.tlopo.com está a ser detetado incorretamente.\nEste é um problema com a API da TLOPO.',  # 9
     'Desconhecido',  # 10
     'Sem dados disponíveis',  # 11
-    'Adiciona-me ao teu servidor!'  # 12
+    'Sem Notificações Ativas'  # 12
 ]
 
 MISC = [
     'Mensagem',  # 0
 ]
+
+RELEASE_STRINGS = {
+  'previous_button': 'Anterior',
+  'next_button': 'Próximo',
+  'no_items': 'Nenhum item nesta secção'
+}
 
 STATUS_ALIVE_SRV = 1         
 STATUS_MESSAGE_SRV = 2       

@@ -92,8 +92,7 @@ class BotLocalizer:
                 print(":BotLocalizer: Failed to load %s language, falling back to English" % self.module)
                 x = __import__('bot.language.BotLocalizerEnglish', {}, {}, ['bot.language'])
             globals().update(x.__dict__)
-
-
+    
 # Default to English initially
 default_localizer = BotLocalizer(False, False, 'en-us')
 default_localizer.importLanguageModule()

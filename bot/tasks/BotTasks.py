@@ -72,30 +72,49 @@ class BotTasks:
     def task_release_feed(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
         releaseNotes = []
-        if self.maxReleaseNotes > 10:   
-            for i in range(0, self.maxReleaseNotes, 10):
-                resp = self.contactAPI(task.get('api_url') % (10, i))
-                if resp is None:
-                    continue
-
-                for i in resp:
-                    release = self.get_release_notes(i.get('url'))
-                    release['date'] = i.get('date')
-                    release['url'] = i.get('url')
-                    releaseNotes.append(release)
-
-        else:
-            resp = self.contactAPI(task.get('api_url') % (self.maxReleaseNotes, 0))
-
-            for i in resp:
-                release = self.get_release_notes(i.get('url'))
-                release['date'] = i.get('date')
-                releaseNotes.append(release)
         
-        self.setReleaseFeed(releaseNotes)
+        try:
+            if self.maxReleaseNotes > 10:   
+                for i in range(0, self.maxReleaseNotes, 10):
+                    resp = self.contactAPI(task.get('api_url') % (10, i))
+                    if resp is None:
+                        print("Warning: API request failed for offset %s" % i)
+                        continue
 
-        if self.debug and 'task_release_feed' in BotGlobals.DEBUG_MODULES:
-            print(json.dumps(releaseNotes, indent=4) +"\n\nNum release notes: " + str(len(releaseNotes)))
+                    for release_info in resp:
+                        try:
+                            release = self.get_release_notes(release_info.get('url'))
+                            if release:  # Make sure we got valid data
+                                release['date'] = release_info.get('date')
+                                release['url'] = release_info.get('url')
+                                releaseNotes.append(release)
+                        except Exception as e:
+                            print("Error processing release: %s" % str(e))
+
+            else:
+                resp = self.contactAPI(task.get('api_url') % (self.maxReleaseNotes, 0))
+                
+                if resp:
+                    for release_info in resp:
+                        try:
+                            release = self.get_release_notes(release_info.get('url'))
+                            if release:  # Make sure we got valid data
+                                release['date'] = release_info.get('date')
+                                release['url'] = release_info.get('url')  # Add URL (was missing)
+                                releaseNotes.append(release)
+                        except Exception as e:
+                            print("Error processing release: %s" % str(e))
+            
+            # Always update the feed with whatever we got
+            self.setReleaseFeed(releaseNotes)
+            
+            if self.debug and 'task_release_feed' in BotGlobals.DEBUG_MODULES:
+                print(json.dumps(releaseNotes, indent=4) +"\n\nNum release notes: " + str(len(releaseNotes)))
+        
+        except Exception as e:
+            print("Fatal error in task_release_feed: %s" % str(e))
+            # Set empty feed in case of error
+            self.setReleaseFeed([])
 
 
     def task_news_feed(self, name, task):
@@ -242,7 +261,8 @@ class BotTasks:
   
         translated_news=[]
 
-        print(json.dumps(news, indent=4) +"\n\nNum articals: " + str(len(news)))
+        if self.debug and 'translate_news_feed' in BotGlobals.DEBUG_MODULES:
+            print(json.dumps(news, indent=4) +"\n\nNum articals: " + str(len(news)))
 
         for i in news:
 
@@ -273,106 +293,184 @@ class BotTasks:
         Returns:
             dict: The release notes data.
         """
-
-        with sync_playwright() as p:
-            # Setup browser
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context()
-            page = context.new_page()
-            
-            try:
-                # Load page
-                page.goto(url)
-                page.wait_for_timeout(3000)
-                page_source = page.content()
+        # Default structure for release data
+        release_data = {
+            'version': 'Unknown Version',
+            'sections': {}
+        }
+        
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                context = browser.new_context()
+                page = context.new_page()
                 
-                # Parse HTML
-                soup = BeautifulSoup(page_source, 'html.parser')
-                article_box = soup.find('article', class_='box center')
-                
-                if article_box:
-                    # Extract release metadata
-                    date_span = article_box.find('span', class_='releasenotedate')
-                    if date_span:
-                        release_date = date_span.text.strip()
-
-                    version_span = article_box.find('span', class_='releasenoteversion')
-                    if version_span:
-                        release_version = version_span.text.strip()
+                try:
+                    # Load the page
+                    page.goto(url)
+                    page.wait_for_timeout(3000)  # Wait for content to render
+                    page_source = page.content()
                     
-                    # Get content sections
-                    content_div = article_box.find('div', class_='releasenotecontent')
-                    if content_div:
-                        sections = {}
-                        section_titles = content_div.find_all('h4', class_='title is-4')
+                    # Parse HTML
+                    soup = BeautifulSoup(page_source, 'html.parser')
+                    article_box = soup.find('article', class_='box center')
+                    
+                    if article_box:
+                        # Get release metadata
+                        date_span = article_box.find('span', class_='releasenotedate')
+                        if date_span:
+                            release_data['date'] = date_span.text.strip()
 
-                        for title in section_titles:
-                            section_name = title.text.strip()
-                            if not section_name:
-                                continue
-                                
-                            section_ul = title.find_next('ul')
-                            if section_ul:
-                                items = []
-                                
-                                # Process main list items
-                                top_li_items = section_ul.find_all('li', class_='releasenotecontentitem', recursive=False)
-                                
-                                for li in top_li_items:
-                                    # Extract main item text
-                                    item_text_parts = []
-                                    for content in li.contents:
-                                        if isinstance(content, str):
-                                            item_text_parts.append(content.strip())
-                                        elif content.name == 'ul':
-                                            break
+                        version_span = article_box.find('span', class_='releasenoteversion')
+                        if version_span:
+                            release_data['version'] = version_span.text.strip()
+                        
+                        # Get content
+                        content_div = article_box.find('div', class_='releasenotecontent')
+                        if content_div:
+                            sections = {}
+                            section_titles = content_div.find_all('h4', class_='title is-4')
+                            
+                            for title in section_titles:
+                                section_name = title.text.strip()
+                                if not section_name:
+                                    continue
                                     
-                                    item_text = ' '.join(filter(None, item_text_parts))
+                                section_ul = title.find_next('ul')
+                                if section_ul:
+                                    items = []
+                                    
+                                    top_li_items = section_ul.find_all('li', class_='releasenotecontentitem', recursive=False)
+                                    
+                                    for li in top_li_items:
+                                        item_text_parts = []
+                                        for content in li.contents:
+                                            if isinstance(content, str):
+                                                item_text_parts.append(content.strip())
+                                            elif content.name == 'ul':
+                                                break
+                                        
+                                        item_text = ' '.join(filter(None, item_text_parts))
+                                        
+                                        if not item_text:
+                                            item_text = li.get_text(strip=True)
+                                        
+                                        # Get sub-items
+                                        sub_items = []
+                                        next_element = li.find_next_sibling()
+                                        if next_element and next_element.name == 'ul':
+                                            for sub_li in next_element.find_all('li', class_='releasenotecontentitem'):
+                                                sub_text = sub_li.get_text(strip=True)
+                                                sub_items.append(sub_text)
+                                        
+                                        item_text = item_text.strip()
+                                        
+                                        items.append({
+                                            "text": item_text,
+                                            "sub_items": sub_items
+                                        })
+                                    
+                                    sections[section_name] = items
+                            
+                            release_data['sections'] = sections
 
-                                    if self.debug and 'get_release_notes_items' in BotGlobals.DEBUG_MODULES:
-                                        print('[DEBUG][get_release_notes] Item text: %s' % item_text)
-                                    
-                                    if not item_text:
-                                        item_text = li.get_text(strip=True)
-                                    
-                                    # Get sub-items
-                                    sub_items = []
-                                    next_element = li.find_next_sibling()
-                                    if next_element and next_element.name == 'ul':
-                                        for sub_li in next_element.find_all('li', class_='releasenotecontentitem'):
-                                            sub_text = sub_li.get_text(strip=True)
-                                            sub_items.append(sub_text)
-                                    
-                                    item_text = item_text.strip()
-                                    
-                                    items.append({
-                                        "text": item_text,
-                                        "sub_items": sub_items
-                                    })
-                                
-                                sections[section_name] = items
-                        
-                        # Create data structure
-                        release_data = {
-                            "date": release_date,
-                            "version": release_version,
-                            "sections": sections
-                        }
-                        
-                        if self.debug and 'get_release_notes' in BotGlobals.DEBUG_MODULES:
-                            print(json.dumps(release_data, indent=2))
-                        
-                    else:
-                        print("Content section not found")
-                else:
-                    print("Article box not found on the page")
+                            if self.debug and 'get_release_notes_items' in BotGlobals.DEBUG_MODULES:
+                                print('[DEBUG][get_release_notes_items] Added release notes items: \n%s' % json.dumps(release_data, indent=4))
+                    
+                except Exception as e:
+                    print("Error scraping release notes: %s" % str(e))
                 
-            finally:
-                # Cleanup
-                browser.close()
-
+                finally:
+                    browser.close()
+            
             return release_data
+            
+        except Exception as e:
+            print("Fatal error in get_release_notes: %s" % str(e))
+            return release_data  # Return the default structure in case of error
+    
+    def translate_release_notes(self, release: list) -> list:
+        """
+        Translate the release notes using the BotTranslate class.
 
+        Args:
+            release (list): The release notes to translate.
+
+        Returns:
+            list: The translated release notes.
+        """
+        if not release:  # Check if list is empty
+            return []
+            
+        translate = BotTranslate.BotTranslate(self.debug, self.language)
+        translated_release = []
+
+        try:
+            for i in release:
+                    
+                translated_release_item = {
+                    'version': i.get('version', 'Unknown Version'),
+                    'date': i.get('date', ''),
+                    'url': i.get('url', ''),
+                    'sections': {}
+                }
+
+                sections = i.get('sections', {})
+                for section_name, items in sections.items():
+                    translated_items = []
+                    for item in items:
+                            
+                        text = translate.translate_string(item.get('text', ''))
+                        sub_items = []
+                        for sub_item in item.get('sub_items', []):
+                            sub_items.append(translate.translate_string(sub_item))
+                        
+                        translated_items.append({
+                            'text': text,
+                            'sub_items': sub_items
+                        })
+                        
+                    translated_release_item['sections'][section_name] = translated_items
+
+                translated_release.append(translated_release_item)
+                if self.debug and 'translated_release_item' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][translated_release_item] Added translated news item: %s' % translated_release_item)
+
+            if self.debug and 'translated_release' in BotGlobals.DEBUG_MODULES:
+                print('[DEBUG][translated_release] Added translated release: %s' % translated_release)
+
+            return translated_release
+        except Exception as e:
+            print("Error translating release notes: %s" % str(e))
+            return release  # Return original if translation fails
+    
+    def translate_news_notifications(self, notification: list|None) -> list|None:
+        """
+        Translate the news notifications using the BotTranslate class.
+
+        Args:
+            news (list): The news notifications to translate.
+
+        Returns:
+            list: The translated news notifications.
+        """
+
+        if notification: 
+            translate = BotTranslate.BotTranslate(self.debug, self.language)
+            translated_notification = {
+                'message': translate.translate_string(notification.get('message')),
+                'datetime': notification.get('datetime')
+            }
+
+            if self.debug and 'translated_news_notifications' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][translate_news_notifications] Added translated news item: %s' % translated_notification.get('message'))
+
+            return translated_notification
+        else:
+            if self.debug and 'translated_news_notifications' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][translate_news_notifications] No news notifications to translate.')
+
+            return None
 
     def setActiveFleets(self, fleets):
         """
@@ -452,7 +550,10 @@ class BotTasks:
         Set release feed.
         """
 
-        self.releaseFeed = releaseFeed
+        if BotLocalizer.AUTOTRANSLATE_IN_USE:
+            self.releaseFeed = self.translate_release_notes(releaseFeed)
+        else:
+            self.releaseFeed = releaseFeed
 
     def getReleaseFeed(self):
         """
@@ -461,12 +562,14 @@ class BotTasks:
 
         return self.releaseFeed
     
-    def setNewsNotifications(self, newsNotifications: dict|None) -> dict|None:
+    def setNewsNotifications(self, newsNotifications: dict|None):
         """
         Set news notifications.
         """
-
-        self.newsNotifications = newsNotifications
+        if BotLocalizer.AUTOTRANSLATE_IN_USE:
+            self.newsNotifications = self.translate_news_notifications(newsNotifications)
+        else:
+            self.newsNotifications = newsNotifications
     
     def getNewsNotifications(self):
         """

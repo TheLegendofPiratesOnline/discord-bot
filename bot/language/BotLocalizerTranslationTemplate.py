@@ -33,7 +33,8 @@ EMBED_TITLES = [
     "Server Status",
     "Server Status Unavailable",
     "Server Notices Unavailable",
-    "The Legend of Pirates Online is currently closed for an update"
+    "The Legend of Pirates Online is currently closed for an update",
+    "No Active Notifications"
 ]
 
 FIELD_NAMES = [
@@ -95,4 +96,10 @@ GLOB_CODE_TO_STATUS = {
     STATUS_ERROR_GLOB:   "ERROR",
     STATUS_FATAL_GLOB:   "FATAL",
     STATUS_UNKNOWN_GLOB: "UNKNOWN"
+}
+
+RELEASE_STRINGS = {
+  'previous_button': 'Previous',
+  'next_button': 'Next',
+  'no_releases': 'No items in this section'
 }

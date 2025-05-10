@@ -85,6 +85,12 @@ MISC = [
     'Message',  # 0
 ]
 
+RELEASE_STRINGS = {
+  'previous_button': 'Previous',
+  'next_button': 'Next',
+  'no_items': 'No items in this section'
+}
+
 STATUS_ALIVE_SRV = 1
 STATUS_MESSAGE_SRV = 2
 STATUS_UPDATE_SRV = 4

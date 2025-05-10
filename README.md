@@ -34,14 +34,15 @@ The following procedure explains how to install the TLOPO Discord Bot:
 The following outlines how to configure `settings.json`:
 
 1. Add your Discord Bot API token to the `appToken` field in `settings.json`.
-2. Select the language the bot should use. To choose a language, enter the language abbreviation in the `language` field of `settings.json`. Currently, the officially supported languages are:
+2. Select the language the bot should use. To choose a language, enter the language abbreviation in the `language` field. Currently, the officially supported languages are:
     - English (`en-us`)
     - Portuguese (Portugal) (`pt-pt`)
 
     If you prefer the bot to output in a different language, it has a built-in auto-translate feature. Just enter the full language name into the `language` field, and set `autoTranslate` to `True`.
-3. Set your desired command prefix by modifying the `commandPrefix` field in `settings.json`.
+3. Set your desired command prefix by modifying the `commandPrefix` field.
 4. If you want others to be able to add the bot to their Discord servers, set the installation link in the `link` field, and set `showLink` to `True`.  
    The link will be shown in the bot's `!about` command.
+5. Set your desired maximum number of releases and news articles to be shown in the `maxReleaseNotes` and `maxNewsAricles` fields in `settings.json`.
 
 ## Starting the Bot
 The following outlines how to start the bot:
@@ -61,7 +62,7 @@ This delay occurs only during the first run.
 ## Additional Information
 This project is still in active development.
 
-Due to how the bot currently handles release notes, startup will take a good amount of time (especially with large max release values).
+Due to how the bot currently handles release notes, start-up will take a good amount of time, especially when `maxReleaseNotes` is set to a high amount.
 
 See to see all planned updates read [WIP.md](WIP.md)
 

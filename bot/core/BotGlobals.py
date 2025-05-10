@@ -188,7 +188,11 @@ PROTECTED_WORDS = [
     'STATUS_FATAL_GLOB:',               #56
     'STATUS_UNKNOWN_GLOB:',             #57
     'prod-gs-1.tlopo.com',              #58
-    'AUTO_TRANSLATE_WARNING'            #59
+    'AUTO_TRANSLATE_WARNING',           #59
+    'previous_button',                  #60
+    'next_button',                      #61
+    'no_releases',                      #62
+    'RELEASE_STRINGS',                  #63
 ]
 
 # Anything that is commented out will not output its debug information.
@@ -200,17 +204,21 @@ DEBUG_MODULES = {
     #'task_shards_fleets',
     #'task_shards_invasions',
     #'task_shards_populations',
-    #'translate_news_feed',
-    #'translate_localizer_add_items',
-    #'translate_localizer_translate_items',
-    #'clean_translation_errors',
-    #'translate_localizer_stage_1',
-    #'translate_localizer_stage_2',
-    #'protect_words',
-    #'restore_protected_words',
-    #'restore_protected_words_replacements'
-    #'translate_string',
+    'translate_news_feed',
+    'translate_localizer_add_items',
+    'translate_localizer_translate_items',
+    'clean_translation_errors',
+    'translate_localizer_stage_1',
+    'translate_localizer_stage_2',
+    'protect_words',
+    'restore_protected_words',
+    'restore_protected_words_replacements',
+    'translate_string',
     'get_release_notes',
     'get_release_notes_items',
-    'task_release_feed'
+    'task_release_feed',
+    'translated_release_item',
+    'translated_release',
+    'translated_news_notifications',
+    'help_translate',
 }

@@ -47,12 +47,13 @@ class BotCore(Commands.Commands):
             self.settings.loadSettings(BotGlobals.LOCAL_SETTINGS_FILENAME, override=True)
 
         # Get language with default fallback
-        language = self.settings.getSetting('language')
-        if not language:
-            language = 'en-us'
+        global LANGUAGE         #lazy fix for a bug
+        LANGUAGE = self.settings.getSetting('language')
+        if not LANGUAGE:
+            LANGUAGE = 'en-us'
 
         # Initialize the BotLocalizer class.
-        localizer = BotLocalizer.BotLocalizer(self.settings.getSetting('debug'), self.settings.getSetting('autoTranslate'), language)
+        localizer = BotLocalizer.BotLocalizer(self.settings.getSetting('debug'), self.settings.getSetting('autoTranslate'), LANGUAGE)
 
         # Import language module
         localizer.importLanguageModule()
