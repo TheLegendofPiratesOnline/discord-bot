@@ -3,6 +3,11 @@
     "checkForUpdates": true,
     "language": "en-us",
     "commandPrefix": "!",
-    "debug":false,
-    "suppessWarnings":true
+    "debug":false,              
+    "suppessWarnings":true,
+    "link": "unset",
+    "showLink": false,
+    "autoTranslate": false,
+    "maxNewsAricles": 5,
+    "maxReleaseNotes": 5
 }

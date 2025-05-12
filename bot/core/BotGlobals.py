@@ -14,18 +14,22 @@ The BotGlobals class will serve as a central location
 of all global values in the TLOPO Discord Bot project.
 """
 
-APP_DESCRIPTION = "Discord bot by TLOPO. <3 \n\n https://github.com/TheLegendofPiratesOnline/discord-bot"
-
 LOCAL_SETTINGS_FILENAME = 'local_settings.json'
 SETTINGS_FILENAME = 'settings.json'
+AUTHORS_FILENAME = 'authors.md'
 
 # API Docs: https://tlopo.com/docs/
 API_URLS = {
-    'news_feed':'https://api.tlopo.com/news/feed/',
-    'news_notification':'https://api.tlopo.com/news/notification',
+    'news_feed':'https://api.tlopo.com/news/feed/?limit=%s&offset=%s',
+    'news_notification':'https://api.tlopo.com/news/notification/',
+    'release_feed':'https://api.tlopo.com/releases/feed/?limit=%s&offset=%s',
     'shards':'https://api.tlopo.com/shards',
     'system_status':'https://api.tlopo.com/system/status'
 }
+
+SOURCE_URL = "https://github.com/TheLegendofPiratesOnline/discord-bot"
+
+TLOPO_URL = "https://tlopo.com/"
 
 BOT_TASKS = {
     'task_shards': {
@@ -37,12 +41,16 @@ BOT_TASKS = {
         'api_url': API_URLS.get('system_status')
     },
     'task_news_feed': {
-        'time': 25.0,
+        'time': 900.0,                                  # 15 minutes
         'api_url': API_URLS.get('news_feed')
     },
     'task_news_notification': {
         'time': 25.0,
         'api_url': API_URLS.get('news_notification')
+    },
+    'task_release_feed': {
+        'time': 900.0,
+        'api_url': API_URLS.get('release_feed')
     }
 }
 
@@ -65,22 +73,6 @@ BASE_CHANNEL_TO_NAME = {
     '412000000': 'Valor'
 }
 
-STATUS_ALIVE_SRV = 1
-STATUS_MESSAGE_SRV = 2
-STATUS_UPDATE_SRV = 4
-STATUS_ERROR_SRV = 8
-STATUS_FATAL_SRV = 16
-STATUS_UNKNOWN_SRV = 32
-
-SRV_CODE_TO_STATUS = {
-    STATUS_ALIVE_SRV:   "ALIVE",
-    STATUS_MESSAGE_SRV: "MESSAGE",
-    STATUS_UPDATE_SRV:  "UPDATE",
-    STATUS_ERROR_SRV:   "ERROR",
-    STATUS_FATAL_SRV:   "FATAL",
-    STATUS_UNKNOWN_SRV: "UNKNOWN"
-}
-
 STATUS_ALIVE_SRV_EMOJI =   1
 STATUS_MESSAGE_SRV_EMOJI = 2
 STATUS_UPDATE_SRV_EMOJI = 4
@@ -97,22 +89,6 @@ SRV_CODE_TO_EMOJI = {
     STATUS_UNKNOWN_SRV_EMOJI: ":red_circle:"
 }
 
-STATUS_ALIVE_GLOB = 1
-STATUS_MESSAGE_GLOB = 2
-STATUS_UPDATE_GLOB = 3
-STATUS_ERROR_GLOB = 4
-STATUS_FATAL_GLOB = 5
-STATUS_UNKNOWN_GLOB = 6
-
-GLOB_CODE_TO_STATUS = {
-    STATUS_ALIVE_GLOB:   "ALIVE",
-    STATUS_MESSAGE_GLOB: "MESSAGE",
-    STATUS_UPDATE_GLOB:  "UPDATE",
-    STATUS_ERROR_GLOB:   "ERROR",
-    STATUS_FATAL_GLOB:   "FATAL",
-    STATUS_UNKNOWN_GLOB: "UNKNOWN"
-}
-
 STATUS_ALIVE_GLOB_EMOJI = 1
 STATUS_MESSAGE_GLOB_EMOJI = 2
 STATUS_UPDATE_GLOB_EMOJI = 3
@@ -127,4 +103,124 @@ GLOB_CODE_TO_EMOJI = {
     STATUS_ERROR_GLOB_EMOJI:   ":red_circle:",
     STATUS_FATAL_GLOB_EMOJI:   ":red_circle:",
     STATUS_UNKNOWN_GLOB_EMOJI: ":red_circle:"
+}
+
+EMBED_COLOR = {
+    'help': 0x3498db,       # Blue
+    'about': 0x9b59b6,      # Purple
+    'status': 0x2ecc71,     # Green
+    'fullstatus': 0x27ae60, # Dark Green
+    'oceans': 0x1abc9c,     # Turquoise
+    'fleets': 0xe67e22,     # Orange
+    'invasions': 0xe74c3c,  # Red
+    'notices': 0xf1c40f,    # Yellow
+    'error': 0xff0000,      # Bright Red
+    'warning': 0xf39c12,    # Amber
+    'offline': 0x95a5a6,    # Gray
+    'news': 0x1f8b4c        # A darker green xD
+}
+
+FORMAT_STRINGS = {
+    'bold': '**%s**',
+    'server_status': '**%s**:  %s\n',
+    'notice_format': '\n**%s** | %s\n**%s:** *%s*\n',
+    'release_text': '- %s\n',
+    'release_sub_text': '  - %s\n',
+}
+
+PROTECTED_WORDS = [
+    'BotLocalizer',                     #0
+    'bot'                               #1
+    'Discord',                          #2
+    'TLOPO',                            #3
+    'The Legend of Pirates Online',     #4
+    'TLOPO Discord Bot',                #5
+    '"""',                              #6
+    'BotLocalizer_',                    #7
+    '_AT',                              #8
+    'APP_DESCRIPTION = ',               #9
+    'OUT_OF_DATE = ',                   #10
+    'FLEET_ITEM_INFO = ',               #11
+    'INVASION_ITEM_INFO = ',            #12
+    'SYSTEM_STATUS_INFO = ',            #13
+    'OVER_ALL_STATUS = ',               #14
+    'EMBED_TITLES = ',                  #15
+    'FIELD_NAMES = ',                   #16
+    'STATUS_MESSAGES = ',               #17
+    'MISC = ',                          #18
+    'STATUS_ALIVE_SRV = 1',             #19
+    'STATUS_MESSAGE_SRV = 2',           #20
+    'STATUS_UPDATE_SRV = 4',            #21
+    'STATUS_ERROR_SRV = 8',             #22
+    'STATUS_FATAL_SRV = 16',            #23
+    'STATUS_UNKNOWN_SRV = 32',          #24
+    'SRV_CODE_TO_STATUS = ',            #25
+    'STATUS_ALIVE_GLOB = 1',            #26
+    'STATUS_MESSAGE_GLOB = 2',          #27
+    'STATUS_UPDATE_GLOB = 3',           #28
+    'STATUS_ERROR_GLOB = 4',            #29
+    'STATUS_FATAL_GLOB = 5',            #30
+    'STATUS_UNKNOWN_GLOB = 6',          #31
+    'GLOB_CODE_TO_STATUS = ',           #32
+    '[',                                #33
+    ']',                                #34
+    '{',                                #35
+    '}',                                #36
+    '<3',                               #37
+    r'%s',                              #38
+    "'''",                              #39
+    '**',                               #40
+    '\\n',                              #41
+    'https://tlopo.com/',               #42
+    'https://github.com/TheLegendofPiratesOnline/discord-bot/issues',       #43
+    'https://github.com/TheLegendofPiratesOnline/discord-bot',              #44
+    '    ',                             #45
+    'STATUS_ALIVE_SRV:',                #46
+    'STATUS_MESSAGE_SRV:',              #47
+    'STATUS_UPDATE_SRV:',               #48
+    'STATUS_ERROR_SRV:',                #49
+    'STATUS_FATAL_SRV:',                #50
+    'STATUS_UNKNOWN_SRV:',              #51
+    'STATUS_ALIVE_GLOB:',               #52
+    'STATUS_MESSAGE_GLOB:',             #53
+    'STATUS_UPDATE_GLOB:',              #54
+    'STATUS_ERROR_GLOB:',               #55
+    'STATUS_FATAL_GLOB:',               #56
+    'STATUS_UNKNOWN_GLOB:',             #57
+    'prod-gs-1.tlopo.com',              #58
+    'AUTO_TRANSLATE_WARNING',           #59
+    'previous_button',                  #60
+    'next_button',                      #61
+    'no_releases',                      #62
+    'RELEASE_STRINGS',                  #63
+]
+
+# Anything that is commented out will not output its debug information.
+DEBUG_MODULES = {
+    #'task_news_notification',
+    #'task_news_feed',
+    #'task_system_status',
+    #'task_shards',
+    #'task_shards_fleets',
+    #'task_shards_invasions',
+    #'task_shards_populations',
+    'translated_news_feed',
+    'translate_localizer_add_items',
+    'translate_localizer_translate_items',
+    'clean_translation_errors',
+    'translate_localizer_stage_1',
+    'translate_localizer_stage_2',
+    'protect_words',
+    'restore_protected_words',
+    'restore_protected_words_replacements',
+    'translate_string',
+    'get_release_notes',
+    'get_release_notes_items',
+    'task_release_feed',
+    'translated_release_item',
+    'translated_release',
+    'translate_news_notifications',
+    'help_translate',
+    'getReleaseFeed',
+    'create_release_notes_file',
 }

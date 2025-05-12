@@ -13,6 +13,7 @@ import discord
 from discord.ext import commands
 
 from bot.core import BotGlobals, BotSettings
+from bot.language import BotLocalizer
 from bot.tasks import BotTasks
 
 from bot.commands import Commands
@@ -45,15 +46,28 @@ class BotCore(Commands.Commands):
             # the local settings will override the regular.
             self.settings.loadSettings(BotGlobals.LOCAL_SETTINGS_FILENAME, override=True)
 
+        # Get language with default fallback
+        global LANGUAGE         #lazy fix for a bug
+        LANGUAGE = self.settings.getSetting('language')
+        if not LANGUAGE:
+            LANGUAGE = 'en-us'
+
+        # Initialize the BotLocalizer class.
+        localizer = BotLocalizer.BotLocalizer(self.settings.getSetting('debug'), self.settings.getSetting('autoTranslate'), LANGUAGE)
+
+        # Import language module
+        localizer.importLanguageModule()
+
         # Create the bot using Discord's API.
         intents = discord.Intents.default()
         intents.message_content = True
         intents.members = True
 
-        self.bot = commands.Bot(description=BotGlobals.APP_DESCRIPTION, command_prefix=self.settings.getSetting('commandPrefix'), intents=intents)
+        self.bot = commands.Bot(description=BotLocalizer.APP_DESCRIPTION, command_prefix=self.settings.getSetting('commandPrefix'), intents=intents)
+        self.bot.remove_command('help')
 
         # Initialize taskMgr.
-        self.taskMgr = BotTasks.BotTasks()
+        self.taskMgr = BotTasks.BotTasks(self.settings.getSetting('maxNewsAricles'), self.settings.getSetting('debug'), self.settings.getSetting('language'), self.settings.getSetting('maxReleaseNotes'))
         self.taskMgr.initializeTasks(BotGlobals.BOT_TASKS)
 
         # Initialize the Commands class.
@@ -77,5 +91,6 @@ class BotCore(Commands.Commands):
             if len(self.bot.guilds) == 0:
                 print(":BotCore: To connect this bot to a server, please use the following url:\n")
                 print('    https://discordapp.com/oauth2/authorize?client_id=%s&scope=bot&permissions=8' % self.bot.user.id)
+                #! UPDATE BOT SCOPE SO IT DOESNT NEED SERVER ADMIN ACCESS
 
-            print(':BotCore: %s' % BotGlobals.APP_DESCRIPTION)
+            print(':BotCore: %s' % BotLocalizer.APP_DESCRIPTION)
