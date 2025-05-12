@@ -16,6 +16,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+import os
 
 class BotTasks:
     """
@@ -35,6 +36,7 @@ class BotTasks:
         self.debug = debug
         self.language = language
         self.maxReleaseNotes = maxReleaseNotes
+        self.releaseNotesPath = None
 
     def initializeTasks(self, tasks):
         print(":BotTasks: Initializing tasks...")
@@ -72,49 +74,58 @@ class BotTasks:
     def task_release_feed(self, name, task):
         threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
         releaseNotes = []
-        
-        try:
-            if self.maxReleaseNotes > 10:   
-                for i in range(0, self.maxReleaseNotes, 10):
-                    resp = self.contactAPI(task.get('api_url') % (10, i))
-                    if resp is None:
-                        print("Warning: API request failed for offset %s" % i)
-                        continue
 
-                    for release_info in resp:
-                        try:
-                            release = self.get_release_notes(release_info.get('url'))
-                            if release:  # Make sure we got valid data
-                                release['date'] = release_info.get('date')
-                                release['url'] = release_info.get('url')
-                                releaseNotes.append(release)
-                        except Exception as e:
-                            print("Error processing release: %s" % str(e))
-
-            else:
-                resp = self.contactAPI(task.get('api_url') % (self.maxReleaseNotes, 0))
-                
-                if resp:
-                    for release_info in resp:
-                        try:
-                            release = self.get_release_notes(release_info.get('url'))
-                            if release:  # Make sure we got valid data
-                                release['date'] = release_info.get('date')
-                                release['url'] = release_info.get('url')  # Add URL (was missing)
-                                releaseNotes.append(release)
-                        except Exception as e:
-                            print("Error processing release: %s" % str(e))
-            
-            # Always update the feed with whatever we got
-            self.setReleaseFeed(releaseNotes)
-            
+        getLatestReleaseMetadata = self.contactAPI(task.get('api_url') % (1, 0))
+    
+        if os.path.exists('bot/tasks/BotReleaseNotes_%s_%s.json' % (self.language, getLatestReleaseMetadata[0].get('version', 'Unknown Version'))):
+            self.releaseNotesPath = 'bot/tasks/BotReleaseNotes_%s_%s.json' % (self.language, getLatestReleaseMetadata[0].get('version', 'Unknown Version'))
             if self.debug and 'task_release_feed' in BotGlobals.DEBUG_MODULES:
-                print(json.dumps(releaseNotes, indent=4) +"\n\nNum release notes: " + str(len(releaseNotes)))
-        
-        except Exception as e:
-            print("Fatal error in task_release_feed: %s" % str(e))
-            # Set empty feed in case of error
-            self.setReleaseFeed([])
+                print('[DEBUG][task_release_feed] Release notes file exists: %s' % self.releaseNotesPath)
+                print('[DEBUG][task_release_feed] Using existing release notes file instead of fetching new data.')
+
+        else:    
+            try:
+                if self.maxReleaseNotes > 10:   
+                    for i in range(0, self.maxReleaseNotes, 10):
+                        resp = self.contactAPI(task.get('api_url') % (10, i))
+                        if resp is None:
+                            print("Warning: API request failed for offset %s" % i)
+                            continue
+
+                        for release_info in resp:
+                            try:
+                                release = self.get_release_notes(release_info.get('url'))
+                                if release:  # Make sure we got valid data
+                                    release['date'] = release_info.get('date')
+                                    release['url'] = release_info.get('url')
+                                    releaseNotes.append(release)
+                            except Exception as e:
+                                print("Error processing release: %s" % str(e))
+
+                else:
+                    resp = self.contactAPI(task.get('api_url') % (self.maxReleaseNotes, 0))
+                    
+                    if resp:
+                        for release_info in resp:
+                            try:
+                                release = self.get_release_notes(release_info.get('url'))
+                                if release:  # Make sure we got valid data
+                                    release['date'] = release_info.get('date')
+                                    release['url'] = release_info.get('url')  # Add URL (was missing)
+                                    releaseNotes.append(release)
+                            except Exception as e:
+                                print("Error processing release: %s" % str(e))
+                
+                # Always update the feed with whatever we got
+                self.setReleaseFeed(releaseNotes)
+                
+                if self.debug and 'task_release_feed' in BotGlobals.DEBUG_MODULES:
+                    print(json.dumps(releaseNotes, indent=4) +"\n\nNum release notes: " + str(len(releaseNotes)))
+            
+            except Exception as e:
+                print("Fatal error in task_release_feed: %s" % str(e))
+                # Set empty feed in case of error
+                self.setReleaseFeed([])
 
 
     def task_news_feed(self, name, task):
@@ -388,7 +399,42 @@ class BotTasks:
         except Exception as e:
             print("Fatal error in get_release_notes: %s" % str(e))
             return release_data  # Return the default structure in case of error
-    
+
+    def create_release_notes_file(self) -> str:
+        """
+        Create a file with the release notes.
+
+        Uses the format BotReleaseNotes_<language>_<version>.json where <version> is the latest release version.
+
+        Used to speed up the process of getting the release notes on initialization.
+
+        Returns:
+            str: The path to the created file.
+        """
+
+        try:
+            filePath = 'bot/tasks/BotReleaseNotes_%s_%s.json' % (self.language, self.releaseFeed[0].get('version', 'Unknown Version'))
+
+            with open(filePath, 'w') as f:
+                json.dump(self.releaseFeed, f, indent=4)
+                if self.debug and 'create_release_notes_file' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][create_release_notes_file] Created file %s.' % filePath)
+
+            try:
+                removeFilePath = 'bot/tasks/BotReleaseNotes_%s_%s.json' % (self.language, self.releaseFeed[1].get('version', 'Unknown Version'))
+                os.remove(removeFilePath)
+
+            except FileNotFoundError:
+                if self.debug and 'create_release_notes_file' in BotGlobals.DEBUG_MODULES:
+                    print('[DEBUG][create_release_notes_file] File not found for removal: %s' % removeFilePath)
+                pass
+
+            return filePath
+        
+        except Exception as e:
+            print("Error creating release notes file: %s" % str(e))
+            return None
+        
     def translate_release_notes(self, release: list) -> list:
         """
         Translate the release notes using the BotTranslate class.
@@ -554,14 +600,23 @@ class BotTasks:
             self.releaseFeed = self.translate_release_notes(releaseFeed)
         else:
             self.releaseFeed = releaseFeed
+        
+        self.create_release_notes_file()
 
     def getReleaseFeed(self):
         """
         Get release feed.
         """
 
-        return self.releaseFeed
-    
+        try:  
+            with open(self.releaseNotesPath, 'r') as f:
+                self.releaseNotes = json.load(f)
+                return self.releaseNotes
+        except Exception as e:
+            if self.debug and 'getReleaseFeed' in BotGlobals.DEBUG_MODULES:
+                print(f"[DEBUG][getReleaseFeed] Error: {str(e)}. Using in-memory data.")
+            return self.releaseFeed
+
     def setNewsNotifications(self, newsNotifications: dict|None):
         """
         Set news notifications.

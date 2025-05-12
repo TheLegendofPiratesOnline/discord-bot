@@ -55,14 +55,23 @@ The following outlines how to start the bot:
 
     `python3 -m bot.core.BotStart`
 
-#### If using an auto-translated language for the first time
-Startup will take longer than usual as the bot generates the new translation. Do not panic if it looks like nothing is happening—this process can take time depending on the language.  
-This delay occurs only during the first run.
+#### Notes on First Run
+On first run the bot must generate a few files. This can take a few minutes depending on your settings.
+
+After the first run this delay will not occur again unless:
+- You change any of the following settings:
+  - `autoTranslate`
+  - `language`
+  - `maxReleaseNotes`
+
+- You delete any of the following files:
+  - `BotLocalizer_<language>_AT.py`
+  - `BotReleaseNotes_<language>_<version>.json`
+
+- The system dectects a new release on startup.
 
 ## Additional Information
 This project is still in active development.
-
-Due to how the bot currently handles release notes, start-up will take a good amount of time, especially when `maxReleaseNotes` is set to a high amount.
 
 See to see all planned updates read [WIP.md](WIP.md)
 

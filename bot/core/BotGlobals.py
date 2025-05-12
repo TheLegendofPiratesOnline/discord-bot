@@ -204,7 +204,7 @@ DEBUG_MODULES = {
     #'task_shards_fleets',
     #'task_shards_invasions',
     #'task_shards_populations',
-    'translate_news_feed',
+    'translated_news_feed',
     'translate_localizer_add_items',
     'translate_localizer_translate_items',
     'clean_translation_errors',
@@ -219,6 +219,8 @@ DEBUG_MODULES = {
     'task_release_feed',
     'translated_release_item',
     'translated_release',
-    'translated_news_notifications',
+    'translate_news_notifications',
     'help_translate',
+    'getReleaseFeed',
+    'create_release_notes_file',
 }
