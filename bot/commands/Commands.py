@@ -39,7 +39,7 @@ class Commands:
             system_status = self.taskMgr.getSystemStatus()
 
             if system_status.get('status', 0) == 3:
-                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Ocean population data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS("Ocean population data is unavailable")
 
             else:
                 oceans = self.taskMgr.getOceanPopulations()
@@ -48,11 +48,11 @@ class Commands:
                 embed = discord.Embed(title="**Ocean Populations**", color=0x0066ff)
 
                 for i, k in sorted(oceans.items()):
-                    discord.Embed.add_field(embed, name=i, value=k, inline=False)
+                    embed.add_field(name=i, value=k, inline=False)
                     total += k
 
 
-                discord.Embed.add_field(embed, name="Total", value="**%s**" % total, inline=False)
+                embed.add_field(name="Total", value="**%s**" % total, inline=False)
                 
             # Response.
             await ctx.send(embed=embed)
@@ -69,18 +69,17 @@ class Commands:
             activeFleetCount = 0
             
             if system_status.get('status', 0) == 3:
-                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Fleet data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS("Fleet data is unavailable")
 
             elif fleets:
                 embed = discord.Embed(title="**Active Fleets**", color=0x0066ff)
 
                 for i, k in sorted(fleets.items()):
                     if k.get('type') == '':
-                        discord.Embed.add_field(embed, name="**%s**" % i, value="No active fleet", inline=False)
+                        embed.add_field(name="**%s**" % i, value="No active fleet", inline=False)
                         activeFleetCount += 1
                     else:
-                        discord.Embed.add_field(
-                            embed,
+                        embed.add_field(
                             name='**%s**' % i,
                             value=BotLocalizer.FLEET_ITEM_INFO % (
                                 k.get('type'),
@@ -109,18 +108,17 @@ class Commands:
             activeInvasionCount = 0
 
             if system_status.get('status', 0) == 3:
-                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Invasion data is unavailable"
+                embed = BotLocalizer.MSG_CLOSED_SERVERS("Invasion data is unavailable")
 
             else:
                 embed = discord.Embed(title="**Active Invasions**", color=0x0066ff)
 
                 for i, k in sorted(invasions.items()):
                     if k.get('state') == '':
-                        discord.Embed.add_field(embed, name='**%s**' % i, value = "No active invasion", inline=False)
+                        embed.add_field(name='**%s**' % i, value="No active invasion", inline=False)
                         activeInvasionCount += 1
                     else:
-                        discord.Embed.add_field(
-                            embed,
+                        embed.add_field(
                             name='**%s**' % i,
                             value=BotLocalizer.INVASION_ITEM_INFO % (
                                 k.get('state'),
@@ -160,14 +158,13 @@ class Commands:
                         flag = BotGlobals.SRV_CODE_TO_STATUS.get(int(notice.get('flag')))
                         tmp += "\n**%s** | %s\n**Message:** *%s*\n" % (flag, i, msg)
                 elif system_status.get('status', 0) == 3:
-                    embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
-                    return
+                    embed = BotLocalizer.MSG_CLOSED_SERVERS("Visit https://tlopo.com/ for more information.")
                 else:
                     tmp = "No known notices."
 
-                discord.Embed.add_field(embed, name=BotLocalizer.OVER_ALL_STATUS % status, value=BotLocalizer.SYSTEM_STATUS_INFO % (tmp, outages), inline=False)
-
-                discord.Embed.set_footer(embed, text="*Status of prod-gs-1.tlopo.com is being detected incorrectly. This is an issue with the API.*")
+                if system_status.get('status', 0) != 3:
+                    embed.add_field(name=BotLocalizer.OVER_ALL_STATUS % status, value=BotLocalizer.SYSTEM_STATUS_INFO % (tmp, outages), inline=False)
+                    embed.set_footer(text="*Status of prod-gs-1.tlopo.com is being detected incorrectly. This is an issue with the API.*")
             else:
                 embed = discord.Embed(title="Server Notices Unavailable", color=0xff0000)
 
@@ -181,7 +178,16 @@ class Commands:
             '''
 
             system_status = self.taskMgr.getSystemStatus()
-            servers = system_status.get('servers')
+
+            if not system_status:
+                await ctx.send(embed=discord.Embed(title="Server Status Unavailable", color=0xff0000))
+                return
+
+            if system_status.get('status', 0) == 3:
+                await ctx.send(embed=BotLocalizer.MSG_CLOSED_SERVERS("Visit https://tlopo.com/ for more information."))
+                return
+
+            servers = system_status.get('servers') or {}
             webs = servers.get('web', [])
             cas = servers.get('client_agents', [])
             ais = servers.get('oceans', [])
@@ -189,38 +195,31 @@ class Commands:
 
             embed = discord.Embed(title="**Server Status**", color=0x0066ff)
 
-            if system_status:
-                tmp = ""
-                for server in webs:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
+            tmp = ""
+            for server in webs:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Web Servers**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in cas:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Client Agents**", value=tmp, inline=False)
+            tmp = ""
+            for server in cas:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Client Agents**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in ais:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Oceans**", value=tmp, inline=False)
+            tmp = ""
+            for server in ais:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Oceans**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in uds:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Gameserver Functions**", value=tmp, inline=False)
+            tmp = ""
+            for server in uds:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Gameserver Functions**", value=tmp, inline=False)
 
-                discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
-            
-            elif system_status.get('status', 0) == 3:
-                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
-
-            else:
-                embed = discord.Embed(title="Server Status Unavailable", color=0xff0000)
+            embed.set_footer(text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
 
             await ctx.send(embed=embed)
         
@@ -232,7 +231,16 @@ class Commands:
             '''
 
             system_status = self.taskMgr.getSystemStatus()
-            servers = system_status.get('servers')
+
+            if not system_status:
+                await ctx.send(embed=discord.Embed(title="Server Status Unavailable", color=0xff0000))
+                return
+
+            if system_status.get('status', 0) == 3:
+                await ctx.send(embed=BotLocalizer.MSG_CLOSED_SERVERS("Visit https://tlopo.com/ for more information."))
+                return
+
+            servers = system_status.get('servers') or {}
             webs = servers.get('web', [])
             cas = servers.get('client_agents', [])
             ais = servers.get('oceans', [])
@@ -240,37 +248,30 @@ class Commands:
 
             embed = discord.Embed(title="**Server Status**", color=0x0066ff)
 
-            if system_status:
-                tmp = ""
-                for server in webs:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Web Servers**", value=tmp, inline=False)
+            tmp = ""
+            for server in webs:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Web Servers**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in cas:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Client Agents**", value=tmp, inline=False)
+            tmp = ""
+            for server in cas:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Client Agents**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in ais:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Oceans**", value=tmp, inline=False)
+            tmp = ""
+            for server in ais:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Oceans**", value=tmp, inline=False)
 
-                tmp = ""
-                for server in uds:
-                    flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
-                    tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
-                discord.Embed.add_field(embed, name="**Gameserver Functions**", value=tmp, inline=False)
+            tmp = ""
+            for server in uds:
+                flag = BotGlobals.GLOB_CODE_TO_EMOJI.get(server.get('status', 0))
+                tmp += "**%s**:  %s\n" % (server.get('name', 'Unknown'), flag)
+            embed.add_field(name="**Gameserver Functions**", value=tmp, inline=False)
 
-                discord.Embed.set_footer(embed, text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
-
-            elif system_status.get('status', 0) == 3:
-                embed = BotLocalizer.MSG_CLOSED_SERVERS % "Visit https://tlopo.com/ for more information."
-            
-            else:
-                embed = discord.Embed(title="Server Status Unavailable", color=0xff0000)
+            embed.set_footer(text="Status of prod-gs-1.tlopo.com is being detected incorrectly.\nThis is an issue with the TLOPO API.")
 
             await ctx.send(embed=embed)

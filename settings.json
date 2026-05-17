@@ -4,5 +4,5 @@
     "language": "en-us",
     "commandPrefix": "!",
     "debug":false,
-    "suppessWarnings":true
+    "suppressWarnings":true
 }
