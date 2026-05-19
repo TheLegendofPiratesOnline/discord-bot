@@ -21,6 +21,10 @@ class BotTasks:
     """
 
     def __init__(self):
+        # threading.Timer callbacks run on background threads while command
+        # handlers read the same dicts from asyncio. The GIL doesn't protect a
+        # writer that re-binds self.<dict> mid-read on the consumer side.
+        self._lock = threading.Lock()
         self.activeFleets = {}
         self.activeInvasions = {}
         self.oceanPopulations = {}
@@ -132,53 +136,61 @@ class BotTasks:
         Set active fleets.
         """
 
-        self.activeFleets = fleets
+        with self._lock:
+            self.activeFleets = fleets
 
     def getActiveFleets(self):
         """
         Get active fleets.
         """
 
-        return self.activeFleets
+        with self._lock:
+            return self.activeFleets
 
     def setSystemStatus(self, status):
         """
         Set system status.
         """
 
-        self.systemStatus = status
+        with self._lock:
+            self.systemStatus = status
 
     def getSystemStatus(self):
         """
         Get system status.
         """
 
-        return self.systemStatus
+        with self._lock:
+            return self.systemStatus
 
     def setActiveInvasions(self, invasions):
         """
         Set active invasions.
         """
 
-        self.activeInvasions = invasions
+        with self._lock:
+            self.activeInvasions = invasions
 
     def getActiveInvasions(self):
         """
         Get active invasions.
         """
 
-        return self.activeInvasions
+        with self._lock:
+            return self.activeInvasions
 
     def setOceanPopulations(self, populations):
         """
         Set ocean populations.
         """
 
-        self.oceanPopulations = populations
+        with self._lock:
+            self.oceanPopulations = populations
 
     def getOceanPopulations(self):
         """
         Get ocean populations.
         """
 
-        return self.oceanPopulations
+        with self._lock:
+            return self.oceanPopulations
