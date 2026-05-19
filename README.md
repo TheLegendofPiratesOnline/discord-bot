@@ -16,5 +16,8 @@ The following procedure documents how to set up the TLOPO Discord Bot.
 5. You'll be prompted to configure the bot. 
 6. Make sure to edit `settings.json` and include the secret key for the App Bot User provided by Discord on the Discord Developers page. Other settings relating to the bot's operation can also be configured here.
 
+## Tests
+From the repo root: `python3 -m unittest bot.tasks.test_bot_tasks`. Runs a concurrency smoke test against the locked `BotTasks` surface.
+
 ## License
 This bot is currently available under the Modified BSD license (BSD 3-Clause). The terms of this license are available in the "LICENSE" file of this archive.
