@@ -93,7 +93,7 @@ class BotSettings:
                 # We are overriding a previous setting.  This could potentially
                 # cause unwanted side effects, therefore we should warn the user
                 # that they have overidden a prior setting.
-                if not self.getSetting('suppessWarnings'):
+                if not self.getSetting('suppressWarnings'):
                     print(":BotSettings(warning): Setting '%s' was overridden." % setting)
 
         # Add the setting.
