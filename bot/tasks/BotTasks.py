@@ -46,16 +46,21 @@ class BotTasks:
 
     """
 
+    def _start_timer(self, name, task):
+        t = threading.Timer(task.get('time'), getattr(self, name), args=[name, task])
+        t.daemon = True
+        t.start()
+
     def task_news_notification(self, name, task):
-        threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
+        self._start_timer(name, task)
         # TODO.
 
     def task_news_feed(self, name, task):
-        threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
+        self._start_timer(name, task)
         # TODO.
 
     def task_system_status(self, name, task):
-        threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
+        self._start_timer(name, task)
         resp = self.contactAPI(task.get('api_url'))
         if resp:
             servers = resp.get('servers')
@@ -75,7 +80,7 @@ class BotTasks:
             self.setSystemStatus(out)
 
     def task_shards(self, name, task):
-        threading.Timer(task.get('time'), getattr(self, name), args=[name, task]).start()
+        self._start_timer(name, task)
         resp = self.contactAPI(task.get('api_url'))
         if resp:
             fleets = {}
@@ -116,13 +121,12 @@ class BotTasks:
         Contacts API and return its response in JSON format.
         """
 
-        r = requests.get(apiUrl)
-
         try:
-            # Just in case the API url dies, it's sanity check this.
-            r = json.loads(r.text)
-        except:
-            print(":BotTasks(error): Failed to contact API.")
+            r = requests.get(apiUrl, timeout=10)
+            r.raise_for_status()
+            r = r.json()
+        except Exception as e:
+            print(":BotTasks(error): Failed to contact API: %s" % e)
             r = None
 
         return r
